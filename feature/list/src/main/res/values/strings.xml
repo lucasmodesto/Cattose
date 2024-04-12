@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_state_message">No kittens found today :(</string>
+    <string name="error_loading_message">Cat-astrophe! We couldn\'t fetch the kitties right now. Check your connection and give it another try"</string>
+</resources>
