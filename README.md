@@ -3,7 +3,7 @@ Jetpack compose app for studying purposes using [thecatapi.com](https://thecatap
 
 |                               List screen                                |                               Detail screen                               |
 |:------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
-| <img src="/docs/images/cattose_list_dark_mode.png" width=30% height=30%> | <img src="/docs/images/cattose_detail_darkmode.png" width=30% height=30%> |
+| <img src="/docs/images/cattose_list_dark_mode.png" width=50% height=50%> | <img src="/docs/images/cattose_detail_darkmode.png" width=50% height=50%> |
 
 ## Api Authentication
 There are some restrictions on the usage without providing the API KEY, which can be set in
