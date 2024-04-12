@@ -1,8 +1,9 @@
 # Cattose
 Jetpack compose app for studying purposes using [thecatapi.com](https://thecatapi.com/) as data source.
 
-<img src="/docs/images/cattose_list_dark_mode.png" width=30% height=30%>
-<img src="/docs/images/cattose_detail_darkmode.png" width=30% height=30%>
+|                               List screen                                |                               Detail screen                               |
+|:------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
+| <img src="/docs/images/cattose_list_dark_mode.png" width=30% height=30%> | <img src="/docs/images/cattose_detail_darkmode.png" width=30% height=30%> |
 
 ## Api Authentication
 There are some restrictions on the usage without providing the API KEY, which can be set in
