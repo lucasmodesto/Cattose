@@ -1,15 +1,18 @@
 package br.com.cattose.app.feature.detail
 
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import br.com.cattose.app.core.domain.model.CatDetails
 import br.com.cattose.app.core.domain.repository.CatRepository
+import br.com.cattose.testcommons.delayedFlowOf
 import com.google.common.truth.Truth
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -21,12 +24,13 @@ class DetailViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
     private val repository = mockk<CatRepository>()
+    private val savedStateHandle = mockk<SavedStateHandle>()
     private lateinit var viewModel: DetailViewModel
 
     @Before
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
-        viewModel = DetailViewModel(repository)
+        every<String?> { savedStateHandle["catId"] } returns "id"
     }
 
     @Test
@@ -34,10 +38,11 @@ class DetailViewModelTest {
         val cats = mockk<CatDetails>()
         coEvery {
             repository.getDetails("id")
-        } returns flowOf(cats)
+        } returns delayedFlowOf(cats)
+
+        viewModel = DetailViewModel(repository, savedStateHandle)
 
         viewModel.state.test {
-            viewModel.fetchDetails("id")
             Truth.assertThat(awaitItem()).isEqualTo(DetailState.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(DetailState.Success(cats))
         }
@@ -47,10 +52,14 @@ class DetailViewModelTest {
     fun `given error should emit error state`() = runTest {
         coEvery {
             repository.getDetails("id")
-        } returns flow { throw Exception() }
+        } returns flow {
+            delay(100)
+            throw Exception()
+        }
+
+        viewModel = DetailViewModel(repository, savedStateHandle)
 
         viewModel.state.test {
-            viewModel.fetchDetails("id")
             Truth.assertThat(awaitItem()).isEqualTo(DetailState.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(DetailState.Error)
         }

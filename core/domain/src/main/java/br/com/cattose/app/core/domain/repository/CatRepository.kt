@@ -5,6 +5,6 @@ import br.com.cattose.app.core.domain.model.CatImage
 import kotlinx.coroutines.flow.Flow
 
 interface CatRepository {
-    suspend fun getCats(): Flow<List<CatImage>>
-    suspend fun getDetails(id: String): Flow<CatDetails>
+    fun getCats(): Flow<List<CatImage>>
+    fun getDetails(id: String): Flow<CatDetails>
 }

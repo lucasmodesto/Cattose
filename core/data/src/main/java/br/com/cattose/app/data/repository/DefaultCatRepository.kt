@@ -10,11 +10,11 @@ class DefaultCatRepository @Inject constructor(
     private val catsApi: CatsApi
 ) : CatRepository {
 
-    override suspend fun getCats() = flow {
+    override fun getCats() = flow {
         emit(catsApi.fetchList().map { it.mapToDomain() })
     }
 
-    override suspend fun getDetails(id: String) = flow {
+    override fun getDetails(id: String) = flow {
         emit(catsApi.fetchDetails(id).mapToDomain())
     }
 }

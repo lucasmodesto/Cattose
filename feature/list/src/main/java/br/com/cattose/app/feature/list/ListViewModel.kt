@@ -18,6 +18,10 @@ class ListViewModel @Inject constructor(
     private val _state = MutableStateFlow<ListState>(ListState.Loading)
     val state: StateFlow<ListState> = _state
 
+    init {
+        fetchList()
+    }
+
     fun fetchList() {
         viewModelScope.launch {
             _state.emit(ListState.Loading)

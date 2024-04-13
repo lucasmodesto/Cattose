@@ -3,13 +3,14 @@ package br.com.cattose.app.feature.list
 import app.cash.turbine.test
 import br.com.cattose.app.core.domain.model.CatImage
 import br.com.cattose.app.core.domain.repository.CatRepository
+import br.com.cattose.testcommons.delayedFlowOf
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -26,7 +27,6 @@ class ListViewModelTest {
     @Before
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
-        viewModel = ListViewModel(repository)
     }
 
     @Test
@@ -34,10 +34,11 @@ class ListViewModelTest {
         val cats = listOf(mockk<CatImage>())
         coEvery {
             repository.getCats()
-        } returns flowOf(cats)
+        } returns delayedFlowOf(cats)
+
+        viewModel = ListViewModel(repository)
 
         viewModel.state.test {
-            viewModel.fetchList()
             Truth.assertThat(awaitItem()).isEqualTo(ListState.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(ListState.Success(cats))
         }
@@ -48,10 +49,10 @@ class ListViewModelTest {
         val cats = listOf<CatImage>()
         coEvery {
             repository.getCats()
-        } returns flowOf(cats)
+        } returns delayedFlowOf(cats)
 
+        viewModel = ListViewModel(repository)
         viewModel.state.test {
-            viewModel.fetchList()
             Truth.assertThat(awaitItem()).isEqualTo(ListState.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(ListState.Empty)
         }
@@ -59,14 +60,17 @@ class ListViewModelTest {
 
     @Test
     fun `given error should emit error state`() = runTest {
+
         coEvery {
             repository.getCats()
-        } returns flow { throw Exception() }
+        } returns flow {
+            delay(100)
+            throw Exception()
+        }
 
         viewModel = ListViewModel(repository)
 
         viewModel.state.test {
-            viewModel.fetchList()
             Truth.assertThat(awaitItem()).isEqualTo(ListState.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(ListState.Error)
         }

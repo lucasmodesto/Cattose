@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "br.com.cattose.app.feature.detail"
+    namespace = "br.com.cattose.testcommons"
     compileSdk = 34
 
     defaultConfig {
@@ -32,23 +30,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = BuildConstants.COMPOSE_COMPILER_VERSION
-    }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-    implementation(projects.core.ui)
-    implementation(projects.core.domain)
-
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
-
-    testImplementation(libs.bundles.test.commons)
-    testImplementation(projects.testcommons)
-    androidTestImplementation(libs.bundles.android.test.commons)
+    implementation(libs.bundles.test.commons)
 }

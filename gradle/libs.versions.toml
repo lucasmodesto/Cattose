@@ -23,6 +23,8 @@ ktor = "2.3.10"
 log4j = "1.7.36"
 secrets = "2.0.1"
 material3 = "1.2.1"
+appcompat = "1.6.1"
+material = "1.11.0"
 
 [libraries]
 ## AndroidX
@@ -71,6 +73,8 @@ androidx-test-core-arch = { group = "androidx.arch.core", name = "core-testing",
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [bundles]
 test-commons = [

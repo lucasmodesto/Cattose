@@ -13,11 +13,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,7 +37,6 @@ fun LoginScreen(
     viewModel: ListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
-    var hasFetched by rememberSaveable { mutableStateOf(false) }
 
     LoginScreenContent(
         state = state.value,
@@ -50,13 +44,6 @@ fun LoginScreen(
         onTryAgainClick = viewModel::fetchList,
         modifier = modifier
     )
-
-    LaunchedEffect(Unit) {
-        if (hasFetched.not()) {
-            viewModel.fetchList()
-            hasFetched = true
-        }
-    }
 }
 
 @Composable
@@ -69,7 +56,9 @@ fun LoginScreenContent(
     when (state) {
         is ListState.Success -> {
             val configuration = LocalConfiguration.current
-            val columns = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val columns = if (
+                configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+            ) {
                 2
             } else {
                 3
@@ -112,7 +101,9 @@ fun LoginScreenContent(
 
         ListState.Loading -> {
             Box(
-                modifier = Modifier.fillMaxSize().testTag("loading"),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("loading"),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()

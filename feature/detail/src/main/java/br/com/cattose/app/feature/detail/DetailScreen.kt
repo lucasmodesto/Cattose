@@ -22,11 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,27 +43,18 @@ import br.com.cattose.app.core.ui.tags.TagList
 
 @Composable
 fun DetailScreen(
-    catId: String,
     onBackClick: () -> Unit,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
-    var hasFetched by rememberSaveable { mutableStateOf(false) }
 
     DetailsScreenContent(
         state = state.value,
         onBackClick = onBackClick,
         onTryAgainClick = {
-            viewModel.fetchDetails(catId)
+            viewModel.fetchDetails()
         }
     )
-
-    LaunchedEffect(Unit) {
-        if (hasFetched.not()) {
-            viewModel.fetchDetails(catId)
-            hasFetched = true
-        }
-    }
 }
 
 @Composable
