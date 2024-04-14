@@ -63,7 +63,6 @@ dependencies {
     implementation(projects.feature.list)
     implementation(projects.feature.detail)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.bundles.test.commons)
+    androidTestImplementation(libs.bundles.android.test.commons)
 }
