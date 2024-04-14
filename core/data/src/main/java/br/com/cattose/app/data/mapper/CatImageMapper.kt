@@ -1,9 +1,9 @@
 package br.com.cattose.app.data.mapper
 
-import br.com.cattose.app.data.model.CatImageResponse
-import br.com.cattose.app.core.domain.model.CatImage
+import br.com.cattose.app.data.model.domain.CatImage
+import br.com.cattose.app.data.model.response.CatImageResponse
 
-fun CatImageResponse.mapToDomain() = CatImage(
+fun CatImageResponse.toDomain() = CatImage(
     id = id.orEmpty(),
     imageUrl = url.orEmpty()
 )

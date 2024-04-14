@@ -1,4 +1,4 @@
-package br.com.cattose.testcommons
+package br.com.cattose.core.testcommons.util
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

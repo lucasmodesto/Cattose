@@ -1,6 +1,6 @@
 package br.com.cattose.app.feature.detail
 
-import br.com.cattose.app.core.domain.model.CatDetails
+import br.com.cattose.app.data.model.domain.CatDetails
 
 sealed interface DetailState {
     data object Loading : DetailState

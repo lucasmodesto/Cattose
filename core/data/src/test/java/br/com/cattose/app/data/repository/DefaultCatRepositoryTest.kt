@@ -2,9 +2,9 @@ package br.com.cattose.app.data.repository
 
 import app.cash.turbine.test
 import br.com.cattose.app.data.api.CatsApi
-import br.com.cattose.app.data.mapper.mapToDomain
-import br.com.cattose.app.data.mock.catImageResponse
-import br.com.cattose.app.data.model.CatDetailResponse
+import br.com.cattose.app.data.mapper.toDomain
+import br.com.cattose.app.data.model.response.CatDetailResponse
+import br.com.cattose.app.data.paging.CatsPagingSource
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.every
@@ -18,17 +18,9 @@ class DefaultCatRepositoryTest {
     private val repository = DefaultCatRepository(api)
 
     @Test
-    fun `given response should emit cats list`() = runTest {
-        val response = listOf(catImageResponse)
-        coEvery {
-            api.fetchList()
-        } returns response
-
-        repository.getCats().test {
-            val cats = awaitItem()
-            Truth.assertThat(cats).isEqualTo(response.map { it.mapToDomain() })
-            awaitComplete()
-        }
+    fun `should return cats paging source`() {
+        val factory = repository.getCatsPagingFactory().invoke()
+        Truth.assertThat(factory).isInstanceOf(CatsPagingSource::class.java)
     }
 
     @Test
@@ -42,7 +34,7 @@ class DefaultCatRepositoryTest {
 
         repository.getDetails("id").test {
             val details = awaitItem()
-            Truth.assertThat(details).isEqualTo(catDetailsResponse.mapToDomain())
+            Truth.assertThat(details).isEqualTo(catDetailsResponse.toDomain())
             awaitComplete()
         }
     }

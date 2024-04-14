@@ -3,7 +3,7 @@ package br.com.cattose.app.feature.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.cattose.app.core.domain.repository.CatRepository
+import br.com.cattose.app.data.repository.CatRepository
 import br.com.cattose.app.feature.detail.navigation.DetailScreenNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

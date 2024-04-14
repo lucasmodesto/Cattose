@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.1"
+agp = "8.3.2"
 kotlin = "1.9.23"
 core-ktx = "1.12.0"
 junit = "4.13.2"
@@ -18,13 +18,11 @@ turbine = "1.0.0"
 mockk = "1.13.10"
 coroutines = "1.8.0"
 coil = "2.6.0"
-jetbrains-kotlin-jvm = "1.9.23"
 ktor = "2.3.10"
 log4j = "1.7.36"
 secrets = "2.0.1"
 material3 = "1.2.1"
-appcompat = "1.6.1"
-material = "1.11.0"
+paging3 = "3.2.1"
 
 [libraries]
 ## AndroidX
@@ -35,13 +33,12 @@ androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lif
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+androidx-compose-paging3 = { group = "androidx.paging", name = "paging-compose", version.ref = "paging3" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 ## image loader
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
@@ -66,15 +63,15 @@ log4j-android = { group = "org.slf4j", name = "slf4j-android", version.ref = "lo
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-mockk = { group = 'io.mockk', name = 'mockk', version.ref = "mockk" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 androidx-test-core-arch = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidx-core-testing" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging3" }
 
 [bundles]
 test-commons = [
@@ -86,6 +83,7 @@ test-commons = [
     "androidx-test-core-arch"
 ]
 android-test-commons = [
+    "mockk-android",
     "androidx-test-ext-junit",
     "espresso-core",
     "ui-test-manifest",
@@ -105,6 +103,6 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin-jvm" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }

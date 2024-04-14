@@ -2,9 +2,9 @@ package br.com.cattose.app.feature.detail
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import br.com.cattose.app.core.domain.model.CatDetails
-import br.com.cattose.app.core.domain.repository.CatRepository
-import br.com.cattose.testcommons.delayedFlowOf
+import br.com.cattose.app.data.model.domain.CatDetails
+import br.com.cattose.app.data.repository.CatRepository
+import br.com.cattose.core.testcommons.util.delayedFlowOf
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.every

@@ -4,13 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "br.com.cattose.testcommons"
+    namespace = "br.com.cattose.core.testcommons"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -33,5 +31,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.data)
     implementation(libs.bundles.test.commons)
 }

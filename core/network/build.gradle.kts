@@ -43,9 +43,9 @@ secrets {
 }
 
 dependencies {
+    implementation(libs.bundles.ktor)
     api(libs.ktor.client.android)
     api(libs.ktor.serialization.kotlinx)
-    implementation(libs.bundles.ktor)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

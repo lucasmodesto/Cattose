@@ -6,8 +6,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
-import br.com.cattose.app.core.domain.model.Breed
-import br.com.cattose.app.core.domain.model.CatDetails
+import br.com.cattose.app.data.model.domain.Breed
+import br.com.cattose.app.data.model.domain.CatDetails
 import org.junit.Rule
 import org.junit.Test
 

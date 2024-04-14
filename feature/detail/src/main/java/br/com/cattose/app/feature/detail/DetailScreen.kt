@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -33,13 +32,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.com.cattose.app.core.domain.model.Breed
-import br.com.cattose.app.core.domain.model.CatDetails
 import br.com.cattose.app.core.ui.R
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.image.ImagePlaceholder
 import br.com.cattose.app.core.ui.tags.TagList
+import br.com.cattose.app.core.ui.util.halfScreenHeightDp
+import br.com.cattose.app.core.ui.util.halfScreenWidthDp
+import br.com.cattose.app.data.model.domain.Breed
+import br.com.cattose.app.data.model.domain.CatDetails
 
 @Composable
 fun DetailScreen(
@@ -47,6 +48,7 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
+
 
     DetailsScreenContent(
         state = state.value,
@@ -83,11 +85,11 @@ fun DetailsScreenContent(
                     ) {
                         DefaultAsyncImage(
                             imageUrl = state.cat.imageUrl,
-                            contentScale = ContentScale.FillWidth,
+                            contentScale = ContentScale.Crop,
                             transformations = listOf(),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .wrapContentHeight()
+                                .height(halfScreenHeightDp())
                                 .align(Alignment.TopStart)
                                 .testTag(state.cat.imageUrl),
                             errorPlaceholder = {
@@ -96,6 +98,14 @@ fun DetailsScreenContent(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(300.dp)
+                                )
+                            },
+                            loadingPlaceholder = {
+                                ImagePlaceholder(
+                                    drawable = R.drawable.cat_placeholder,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(halfScreenHeightDp())
                                 )
                             }
                         )
@@ -106,8 +116,7 @@ fun DetailsScreenContent(
                                 .clickable {
                                     onBackClick()
                                 }
-                                .padding(16.dp),
-                            tint = Color.White
+                                .padding(16.dp)
                         )
                     }
                     state.cat.mainBreed?.let {
@@ -147,7 +156,6 @@ fun LandscapeDetailScreenContent(
     state: DetailState.Success,
     onBackClick: () -> Unit
 ) {
-    val configuration = LocalConfiguration.current
     Column(
         modifier = Modifier
     ) {
@@ -160,7 +168,7 @@ fun LandscapeDetailScreenContent(
                     contentScale = ContentScale.Crop,
                     transformations = listOf(),
                     modifier = Modifier
-                        .width((configuration.screenWidthDp * 0.5).dp)
+                        .width(halfScreenWidthDp())
                         .fillMaxHeight()
                         .align(Alignment.TopStart)
                         .testTag(state.cat.imageUrl),
@@ -168,8 +176,16 @@ fun LandscapeDetailScreenContent(
                         ImagePlaceholder(
                             drawable = R.drawable.cat_placeholder,
                             modifier = Modifier
-                                .width((configuration.screenWidthDp * 0.5).dp)
+                                .width(halfScreenWidthDp())
                                 .fillMaxHeight()
+                        )
+                    },
+                    loadingPlaceholder = {
+                        ImagePlaceholder(
+                            drawable = R.drawable.cat_placeholder,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(halfScreenWidthDp())
                         )
                     }
                 )

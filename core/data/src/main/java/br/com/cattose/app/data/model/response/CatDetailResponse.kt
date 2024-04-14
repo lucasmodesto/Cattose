@@ -1,4 +1,4 @@
-package br.com.cattose.app.data.model
+package br.com.cattose.app.data.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

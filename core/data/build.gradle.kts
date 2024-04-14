@@ -39,14 +39,19 @@ android {
             isReturnDefaultValues = true
         }
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = BuildConstants.COMPOSE_COMPILER_VERSION
+    }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
     implementation(projects.core.network)
-    implementation(projects.core.domain)
-
+    implementation(libs.androidx.compose.paging3)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
+    testImplementation(libs.paging.test)
     testImplementation(libs.bundles.test.commons)
 }

@@ -1,10 +1,10 @@
 package br.com.cattose.app.data.mapper
 
-import br.com.cattose.app.data.model.CatDetailResponse
-import br.com.cattose.app.core.domain.model.CatDetails
+import br.com.cattose.app.data.model.domain.CatDetails
+import br.com.cattose.app.data.model.response.CatDetailResponse
 
-fun CatDetailResponse.mapToDomain() = CatDetails(
+fun CatDetailResponse.toDomain() = CatDetails(
     id = id,
-    mainBreed = breeds?.map { it.mapToDomain() }?.firstOrNull(),
+    mainBreed = breeds?.map { it.toDomain() }?.firstOrNull(),
     imageUrl = url
 )

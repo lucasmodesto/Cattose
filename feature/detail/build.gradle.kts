@@ -38,17 +38,28 @@ android {
     buildFeatures {
         compose = true
     }
+    packaging {
+        resources.excludes.addAll(
+            listOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+            )
+        )
+    }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
     implementation(projects.core.ui)
-    implementation(projects.core.domain)
+    implementation(projects.core.data)
 
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
     testImplementation(libs.bundles.test.commons)
-    testImplementation(projects.testcommons)
+    testImplementation(projects.core.testcommons)
     androidTestImplementation(libs.bundles.android.test.commons)
 }

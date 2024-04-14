@@ -6,7 +6,6 @@ import coil.ImageLoaderFactory
 import coil.decode.GifDecoder
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
-import coil.util.DebugLogger
 import dagger.hilt.android.HiltAndroidApp
 
 private const val COIL_IMAGE_CACHE_DIR = "image_cache"
@@ -32,10 +31,6 @@ class CattoseApp : Application(), ImageLoaderFactory {
                 add(GifDecoder.Factory())
             }
             .respectCacheHeaders(false)
-            .apply {
-                if (BuildConfig.DEBUG) {
-                    logger(DebugLogger())
-                }
-            }.build()
+            .build()
     }
 }
