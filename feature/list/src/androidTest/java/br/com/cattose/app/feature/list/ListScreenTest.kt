@@ -31,6 +31,8 @@ class ListScreenTest {
             every { loadState.append } returns LoadState.NotLoading(endOfPaginationReached = false)
             every { loadState.refresh } returns LoadState.NotLoading(endOfPaginationReached = false)
             every { itemSnapshotList.items } returns cats
+            every { itemSnapshotList.isEmpty() } returns false
+            every { itemSnapshotList.isNotEmpty() } returns true
             every { itemCount } returns cats.size
             every { get(0) } returns cats[0]
             every { get(1) } returns cats[1]
@@ -52,6 +54,8 @@ class ListScreenTest {
     @Test
     fun listScreen_LoadingState() {
         val pagingData = mockk<LazyPagingItems<CatImage>>(relaxed = true) {
+            every { itemSnapshotList.isEmpty() } returns false
+            every { itemSnapshotList.isNotEmpty() } returns true
             every { loadState.refresh } returns LoadState.Loading
         }
 
@@ -67,6 +71,8 @@ class ListScreenTest {
     @Test
     fun listScreen_ErrorState() {
         val pagingData = mockk<LazyPagingItems<CatImage>>(relaxed = true) {
+            every { itemSnapshotList.isEmpty() } returns false
+            every { itemSnapshotList.isNotEmpty() } returns true
             every { loadState.refresh } returns LoadState.Error(Exception())
         }
         val context = ApplicationProvider.getApplicationContext<Context>()

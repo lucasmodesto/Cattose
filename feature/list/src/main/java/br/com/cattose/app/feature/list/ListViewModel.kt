@@ -21,5 +21,4 @@ class ListViewModel @Inject constructor(
         config = PagingConfig(pageSize = 10),
         pagingSourceFactory = catsRepository.getCatsPagingFactory()
     ).flow.cachedIn(viewModelScope)
-
 }

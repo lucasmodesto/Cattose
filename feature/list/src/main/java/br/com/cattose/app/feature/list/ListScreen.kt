@@ -64,12 +64,14 @@ fun ListScreenContent(
     val refreshState = rememberPullToRefreshState()
 
     if (refreshState.isRefreshing) {
-        lazyPagingItems.refresh()
+        LaunchedEffect(Unit) {
+            lazyPagingItems.refresh()
+        }
     }
 
     when (lazyPagingItems.loadState.refresh) {
         LoadState.Loading -> {
-            if (lazyPagingItems.itemCount == 0) {
+            if (lazyPagingItems.itemSnapshotList.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -82,7 +84,7 @@ fun ListScreenContent(
         }
 
         is LoadState.Error -> {
-            if (lazyPagingItems.itemCount == 0) {
+            if (lazyPagingItems.itemSnapshotList.isEmpty()) {
                 TryAgain(
                     message = stringResource(id = R.string.error_loading_message),
                     tryAgainActionText = stringResource(id = br.com.cattose.app.core.ui.R.string.action_retry),
@@ -92,10 +94,11 @@ fun ListScreenContent(
                     modifier = Modifier.fillMaxSize()
                 )
             }
+            refreshState.endRefresh()
         }
 
         is LoadState.NotLoading -> {
-            if (lazyPagingItems.itemCount == 0) {
+            if (lazyPagingItems.itemSnapshotList.isEmpty()) {
                 TryAgain(
                     message = stringResource(id = R.string.empty_state_message),
                     tryAgainActionText = stringResource(id = br.com.cattose.app.core.ui.R.string.action_retry),
@@ -105,6 +108,7 @@ fun ListScreenContent(
                     modifier = Modifier.fillMaxSize()
                 )
             }
+            refreshState.endRefresh()
         }
     }
 
@@ -128,14 +132,14 @@ fun ListScreenContent(
             when (lazyPagingItems.loadState.append) {
                 is LoadState.Error -> {
                     item {
-                        LaunchedEffect(true) {
+                        LaunchedEffect(Unit) {
                             lazyPagingItems.retry()
                         }
                     }
                 }
 
                 LoadState.Loading -> {
-                    if (lazyPagingItems.itemCount > 0) {
+                    if (lazyPagingItems.itemSnapshotList.isNotEmpty()) {
                         item(span = { GridItemSpan(columns) }) {
                             Column(
                                 modifier = Modifier
@@ -150,9 +154,7 @@ fun ListScreenContent(
                     }
                 }
 
-                is LoadState.NotLoading -> {
-                    refreshState.endRefresh()
-                }
+                is LoadState.NotLoading -> Unit
             }
         }
         PullToRefreshContainer(
