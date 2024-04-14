@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.cattose.app.core.ui.theme.CattoTheme
 import br.com.cattose.app.feature.detail.DetailScreen
 import br.com.cattose.app.feature.detail.navigation.DetailScreenNavigation
-import br.com.cattose.app.feature.list.LoginScreen
+import br.com.cattose.app.feature.list.ListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "list") {
                         composable("list") {
-                            LoginScreen(
+                            ListScreen(
                                 onItemClick = {
                                     navController.navigate("details/${it.id}")
                                 }

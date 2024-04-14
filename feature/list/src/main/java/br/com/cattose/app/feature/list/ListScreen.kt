@@ -39,7 +39,7 @@ import br.com.cattose.app.data.model.domain.CatImage
 
 
 @Composable
-fun LoginScreen(
+fun ListScreen(
     onItemClick: (CatImage) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ListViewModel = hiltViewModel()
