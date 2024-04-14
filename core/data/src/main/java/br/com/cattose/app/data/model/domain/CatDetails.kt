@@ -1,4 +1,4 @@
-package br.com.cattose.app.core.domain.model
+package br.com.cattose.app.data.model.domain
 
 data class CatDetails(
     val id: String,
