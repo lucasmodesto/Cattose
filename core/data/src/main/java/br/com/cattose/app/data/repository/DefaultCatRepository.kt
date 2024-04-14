@@ -16,7 +16,6 @@ class DefaultCatRepository @Inject constructor(
             CatsPagingSource(catsApi)
         }
 
-
     override fun getDetails(id: String) = flow {
         emit(catsApi.fetchDetails(id).toDomain())
     }
