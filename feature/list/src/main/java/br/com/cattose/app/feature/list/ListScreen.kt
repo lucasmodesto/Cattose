@@ -61,7 +61,6 @@ fun ListScreenContent(
     onItemClick: (CatImage) -> Unit
 ) {
     val columns = getColumnsByOrientation(LocalConfiguration.current.orientation)
-
     val refreshState = rememberPullToRefreshState()
 
     if (refreshState.isRefreshing) {

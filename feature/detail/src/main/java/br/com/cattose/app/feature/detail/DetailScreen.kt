@@ -49,7 +49,6 @@ fun DetailScreen(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
 
-
     DetailsScreenContent(
         state = state.value,
         onBackClick = onBackClick,
