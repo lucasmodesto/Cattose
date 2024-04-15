@@ -18,7 +18,10 @@ class ListViewModel @Inject constructor(
 ) : ViewModel() {
 
     val catsPagingData: Flow<PagingData<CatImage>> = Pager(
-        config = PagingConfig(pageSize = 10),
+        config = PagingConfig(
+            pageSize = 10,
+            prefetchDistance = 2
+        ),
         pagingSourceFactory = catsRepository.getCatsPagingFactory()
     ).flow.cachedIn(viewModelScope)
 }

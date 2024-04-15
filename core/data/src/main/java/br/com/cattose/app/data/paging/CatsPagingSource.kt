@@ -11,16 +11,9 @@ class CatsPagingSource @Inject constructor(
     private val api: CatsApi
 ) : PagingSource<Int, CatImage>() {
     override fun getRefreshKey(state: PagingState<Int, CatImage>): Int? {
-        val anchorPosition = state.anchorPosition ?: return null
-        val closestPage = state.closestPageToPosition(anchorPosition) ?: return null
-
-        val prevKey = closestPage.prevKey
-        val nextKey = closestPage.nextKey
-
-        return when {
-            prevKey != null -> prevKey.plus(1)
-            nextKey != null -> nextKey.minus(1)
-            else -> null
+        return state.anchorPosition?.let {
+            state.closestPageToPosition(it)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
         }
     }
 
@@ -30,8 +23,8 @@ class CatsPagingSource @Inject constructor(
             val response = api.fetchList(page)
             LoadResult.Page(
                 data = response.map { it.toDomain() },
-                prevKey = null,
-                nextKey = if (response.isEmpty()) null else page.plus(1),
+                prevKey = if (page == 1) null else (page - 1),
+                nextKey = if (response.isEmpty()) null else page.plus(1)
             )
         } catch (ex: Exception) {
             LoadResult.Error(ex)
