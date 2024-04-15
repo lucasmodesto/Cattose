@@ -98,7 +98,8 @@ fun ListScreenContent(
         }
 
         is LoadState.NotLoading -> {
-            if (lazyPagingItems.itemSnapshotList.isEmpty()) {
+            if (lazyPagingItems.itemSnapshotList.isEmpty() &&
+                lazyPagingItems.loadState.append.endOfPaginationReached) {
                 TryAgain(
                     message = stringResource(id = R.string.empty_state_message),
                     tryAgainActionText = stringResource(id = br.com.cattose.app.core.ui.R.string.action_retry),
