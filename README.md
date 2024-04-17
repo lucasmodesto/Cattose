@@ -1,5 +1,5 @@
 # Cattose
-Jetpack compose app for studying purposes using [thecatapi.com](https://thecatapi.com/) as data source.
+Jetpack compose MVVM sample with [thecatapi.com](https://thecatapi.com/) as data source.
 
 |                               List screen                                |                               Detail screen                               |
 |:------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
