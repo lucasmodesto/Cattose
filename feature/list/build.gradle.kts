@@ -59,7 +59,6 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
     testImplementation(libs.bundles.test.commons)
-    testImplementation(projects.core.testcommons)
     testImplementation(libs.paging.test)
     androidTestImplementation(libs.bundles.android.test.commons)
 }
