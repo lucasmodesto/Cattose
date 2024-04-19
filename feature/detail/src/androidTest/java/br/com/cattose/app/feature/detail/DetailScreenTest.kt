@@ -27,19 +27,22 @@ class DetailScreenTest {
                 temperaments = listOf("Sweet", "Agile", "Friendly", "Calm")
             )
         )
-        composeTestRule.setContent {
-            DetailsScreenContent(
-                state = DetailState.Success(catDetails),
-                onBackClick = {}) {
-            }
-        }
-        composeTestRule.onNodeWithTag(DetailTestTags.IMAGE).assertExists()
-        composeTestRule.onNodeWithTag(DetailTestTags.BREED_DETAILS).assertIsDisplayed()
-        composeTestRule.onNodeWithText("Breed").assertIsDisplayed()
-        composeTestRule.onNodeWithText("description").assertIsDisplayed()
 
-        catDetails.mainBreed?.temperaments?.forEach {
-            composeTestRule.onNodeWithText(it).assertIsDisplayed()
+        with(composeTestRule) {
+            setContent {
+                DetailsScreenContent(
+                    state = DetailState.Success(catDetails),
+                    onBackClick = {}) {
+                }
+            }
+            onNodeWithTag(DetailTestTags.IMAGE).assertExists()
+            onNodeWithTag(DetailTestTags.BREED_DETAILS).assertIsDisplayed()
+            onNodeWithText("Breed").assertIsDisplayed()
+            onNodeWithText("description").assertIsDisplayed()
+
+            catDetails.mainBreed?.temperaments?.forEach {
+                onNodeWithText(it).assertIsDisplayed()
+            }
         }
     }
 
