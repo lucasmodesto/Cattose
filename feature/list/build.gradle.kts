@@ -6,7 +6,7 @@ plugins {
 }
 
 apply {
-    from( "${project.rootDir.path}/config/compose.gradle")
+    from("${project.rootDir.path}/config/compose.gradle")
 }
 
 android {
