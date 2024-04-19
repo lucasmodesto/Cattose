@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+apply {
+    from( "${project.rootDir.path}/config/compose.gradle")
+}
+
 android {
     namespace = "br.com.cattose.app.core.ui"
     compileSdk = 34
@@ -23,18 +27,14 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = BuildConstants.COMPOSE_COMPILER_VERSION
-    }
-    buildFeatures {
-        compose = true
     }
 }
 

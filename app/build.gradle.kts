@@ -5,6 +5,10 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+apply {
+    from( "${project.rootDir.path}/config/compose.gradle")
+}
+
 android {
     namespace = "br.com.cattose"
     compileSdk = 34
@@ -39,11 +43,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = BuildConstants.COMPOSE_COMPILER_VERSION
     }
     packaging {
         resources.excludes.addAll(
