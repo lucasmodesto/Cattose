@@ -33,7 +33,8 @@ class DetailScreenTest {
                 onBackClick = {}) {
             }
         }
-        composeTestRule.onNodeWithTag(catDetails.imageUrl).assertExists()
+        composeTestRule.onNodeWithTag(DetailTestTags.IMAGE).assertExists()
+        composeTestRule.onNodeWithTag(DetailTestTags.BREED_DETAILS).assertIsDisplayed()
         composeTestRule.onNodeWithText("Breed").assertIsDisplayed()
         composeTestRule.onNodeWithText("description").assertIsDisplayed()
 
@@ -50,7 +51,7 @@ class DetailScreenTest {
                 onBackClick = {}) {
             }
         }
-        composeTestRule.onNodeWithTag("loading").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DetailTestTags.LOADING).assertIsDisplayed()
     }
 
     @Test
@@ -66,5 +67,4 @@ class DetailScreenTest {
         }
         composeTestRule.onNodeWithText(expectedString).assertIsDisplayed()
     }
-
 }

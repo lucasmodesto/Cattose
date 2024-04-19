@@ -41,6 +41,7 @@ import br.com.cattose.app.core.ui.util.halfScreenHeightDp
 import br.com.cattose.app.core.ui.util.halfScreenWidthDp
 import br.com.cattose.app.data.model.domain.Breed
 import br.com.cattose.app.data.model.domain.CatDetails
+import coil.transform.RoundedCornersTransformation
 
 @Composable
 fun DetailScreen(
@@ -73,58 +74,10 @@ fun DetailsScreenContent(
                     onBackClick = onBackClick
                 )
             } else {
-                val scrollState = rememberScrollState()
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(scrollState)
-                        .padding(bottom = 16.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                    ) {
-                        DefaultAsyncImage(
-                            imageUrl = state.cat.imageUrl,
-                            contentScale = ContentScale.Crop,
-                            transformations = listOf(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(halfScreenHeightDp())
-                                .align(Alignment.TopStart)
-                                .testTag(state.cat.imageUrl),
-                            errorPlaceholder = {
-                                ImagePlaceholder(
-                                    drawable = R.drawable.cat_placeholder,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(300.dp)
-                                )
-                            },
-                            loadingPlaceholder = {
-                                ImagePlaceholder(
-                                    drawable = R.drawable.cat_placeholder,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(halfScreenHeightDp())
-                                )
-                            }
-                        )
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.content_description_back_button),
-                            modifier = Modifier
-                                .clickable {
-                                    onBackClick()
-                                }
-                                .padding(16.dp)
-                        )
-                    }
-                    state.cat.mainBreed?.let {
-                        BreedDetailsColumn(
-                            breed = it,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                    }
-                }
+                PortraitDetailScreenContent(
+                    state = state,
+                    onBackClick = onBackClick
+                )
             }
         }
 
@@ -132,7 +85,7 @@ fun DetailsScreenContent(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .testTag("loading"),
+                    .testTag(DetailTestTags.LOADING),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -145,6 +98,70 @@ fun DetailsScreenContent(
                 tryAgainActionText = stringResource(id = R.string.action_retry),
                 onTryAgainClick = onTryAgainClick,
                 modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Composable
+fun PortraitDetailScreenContent(
+    state: DetailState.Success,
+    onBackClick: () -> Unit
+) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .verticalScroll(scrollState)
+            .padding(bottom = 16.dp)
+    ) {
+        Box(
+            modifier = Modifier
+        ) {
+            DefaultAsyncImage(
+                imageUrl = state.cat.imageUrl,
+                contentScale = ContentScale.Crop,
+                transformations = listOf(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(halfScreenHeightDp())
+                    .align(Alignment.TopStart)
+                    .testTag(DetailTestTags.IMAGE),
+                errorPlaceholder = {
+                    ImagePlaceholder(
+                        drawable = R.drawable.cat_placeholder,
+                        transformations = listOf(RoundedCornersTransformation(16.dp.value)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                    )
+                },
+                loadingPlaceholder = {
+                    ImagePlaceholder(
+                        drawable = R.drawable.cat_placeholder,
+                        transformations = listOf(RoundedCornersTransformation(16.dp.value)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(halfScreenHeightDp())
+                    )
+                }
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(id = R.string.content_description_back_button),
+                modifier = Modifier
+                    .clickable {
+                        onBackClick()
+                    }
+                    .padding(16.dp)
+                    .testTag(DetailTestTags.BACK_BUTTON)
+            )
+        }
+        state.cat.mainBreed?.let {
+            BreedDetailsColumn(
+                breed = it,
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .testTag(DetailTestTags.BREED_DETAILS)
             )
         }
     }
@@ -170,10 +187,11 @@ fun LandscapeDetailScreenContent(
                         .width(halfScreenWidthDp())
                         .fillMaxHeight()
                         .align(Alignment.TopStart)
-                        .testTag(state.cat.imageUrl),
+                        .testTag(DetailTestTags.IMAGE),
                     errorPlaceholder = {
                         ImagePlaceholder(
                             drawable = R.drawable.cat_placeholder,
+                            transformations = listOf(RoundedCornersTransformation(16.dp.value)),
                             modifier = Modifier
                                 .width(halfScreenWidthDp())
                                 .fillMaxHeight()
@@ -182,6 +200,7 @@ fun LandscapeDetailScreenContent(
                     loadingPlaceholder = {
                         ImagePlaceholder(
                             drawable = R.drawable.cat_placeholder,
+                            transformations = listOf(RoundedCornersTransformation(16.dp.value)),
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .width(halfScreenWidthDp())
@@ -195,7 +214,8 @@ fun LandscapeDetailScreenContent(
                         .clickable {
                             onBackClick()
                         }
-                        .padding(16.dp),
+                        .padding(16.dp)
+                        .testTag(DetailTestTags.BACK_BUTTON),
                     tint = Color.White
                 )
             }
@@ -205,6 +225,7 @@ fun LandscapeDetailScreenContent(
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .verticalScroll(rememberScrollState())
+                        .testTag(DetailTestTags.BREED_DETAILS)
                 )
             }
         }

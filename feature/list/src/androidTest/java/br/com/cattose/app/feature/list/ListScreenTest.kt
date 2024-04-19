@@ -1,8 +1,10 @@
 package br.com.cattose.app.feature.list
 
 import android.content.Context
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.paging.LoadState
@@ -49,6 +51,9 @@ class ListScreenTest {
         cats.forEach {
             composeTestRule.onNodeWithTag(it.id).assertIsDisplayed()
         }
+
+        composeTestRule.onNodeWithTag(ListTestTags.LAZY_GRID)
+            .onChildren().assertCountEquals(3)
     }
 
     @Test
@@ -65,7 +70,7 @@ class ListScreenTest {
                 onItemClick = {},
             )
         }
-        composeTestRule.onNodeWithTag("loading").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ListTestTags.LOADING).assertIsDisplayed()
     }
 
     @Test

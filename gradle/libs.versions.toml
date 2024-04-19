@@ -8,6 +8,7 @@ androidx-hilt-navigation-compose = "1.2.0"
 androidx-core-testing = "2.2.0"
 androidx-lifecycle = "2.7.0"
 espresso-core = "3.5.1"
+espresso-device = "1.0.0-alpha08"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.8.2"
 compose-bom = "2024.04.00"
@@ -23,6 +24,7 @@ log4j = "1.7.36"
 secrets = "2.0.1"
 material3 = "1.2.1"
 paging3 = "3.2.1"
+tracing = "1.2.0"
 
 [libraries]
 ## AndroidX
@@ -39,6 +41,7 @@ ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+tracing = { group = "androidx.tracing", name = "tracing", version.ref = "tracing" }
 
 ## image loader
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
@@ -69,6 +72,7 @@ coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 androidx-test-core-arch = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidx-core-testing" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+espresso-device = { group = "androidx.test.espresso", name = "espresso-device", version.ref = "espresso-device" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging3" }
@@ -86,6 +90,7 @@ android-test-commons = [
     "mockk-android",
     "androidx-test-ext-junit",
     "espresso-core",
+    "espresso-device",
     "ui-test-manifest",
     "ui-test-junit4",
     "hilt-android-testing"

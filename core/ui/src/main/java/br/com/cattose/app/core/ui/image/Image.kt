@@ -5,12 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
 
 @Composable
@@ -53,15 +51,21 @@ fun DefaultAsyncImage(
 fun ImagePlaceholder(
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    @DrawableRes drawable: Int
+    @DrawableRes drawable: Int,
+    contentScale: ContentScale = ContentScale.Crop,
+    transformations: List<Transformation>? = null
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(drawable)
-            .transformations(RoundedCornersTransformation(16.dp.value))
+            .apply {
+                transformations?.let {
+                    transformations(it)
+                }
+            }
             .build(),
         contentDescription = contentDescription,
-        contentScale = ContentScale.Crop,
+        contentScale = contentScale,
         modifier = modifier
     )
 }

@@ -36,6 +36,7 @@ import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.image.ImagePlaceholder
 import br.com.cattose.app.data.model.domain.CatImage
+import coil.transform.RoundedCornersTransformation
 
 
 @Composable
@@ -60,7 +61,6 @@ fun ListScreenContent(
     modifier: Modifier = Modifier,
     onItemClick: (CatImage) -> Unit
 ) {
-    val columns = getColumnsByOrientation(LocalConfiguration.current.orientation)
     val refreshState = rememberPullToRefreshState()
 
     if (refreshState.isRefreshing) {
@@ -75,7 +75,7 @@ fun ListScreenContent(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .testTag("loading"),
+                        .testTag(ListTestTags.LOADING),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
@@ -99,7 +99,8 @@ fun ListScreenContent(
 
         is LoadState.NotLoading -> {
             if (lazyPagingItems.itemSnapshotList.isEmpty() &&
-                lazyPagingItems.loadState.append.endOfPaginationReached) {
+                lazyPagingItems.loadState.append.endOfPaginationReached
+            ) {
                 TryAgain(
                     message = stringResource(id = R.string.empty_state_message),
                     tryAgainActionText = stringResource(id = br.com.cattose.app.core.ui.R.string.action_retry),
@@ -113,10 +114,12 @@ fun ListScreenContent(
         }
     }
 
+    val columns = getColumnsByOrientation(LocalConfiguration.current.orientation)
+
     Box(Modifier.nestedScroll(refreshState.nestedScrollConnection)) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
-            modifier = modifier.padding(8.dp)
+            modifier = modifier.padding(8.dp).testTag(ListTestTags.LAZY_GRID)
         ) {
             items(lazyPagingItems.itemCount) {
                 lazyPagingItems[it]?.let {
@@ -184,7 +187,8 @@ fun CatListItem(
                 drawable = br.com.cattose.app.core.ui.R.drawable.cat_placeholder,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(200.dp),
+                transformations = listOf(RoundedCornersTransformation(16.dp.value))
             )
         },
         loadingPlaceholder = {
@@ -192,7 +196,8 @@ fun CatListItem(
                 drawable = br.com.cattose.app.core.ui.R.drawable.cat_placeholder,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(200.dp),
+                transformations = listOf(RoundedCornersTransformation(16.dp.value))
             )
         }
     )
