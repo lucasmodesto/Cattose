@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import br.com.cattose.app.core.ui.theme.CattoTheme
 
 @Composable
 fun Tag(
@@ -55,13 +57,17 @@ fun TagList(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun TagPreview() {
-    Tag(text = "Kitten")
+    CattoTheme {
+        Surface {
+            Tag(text = "Kitten")
+        }
+    }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun TagListPreview() {
     val tags = listOf(
@@ -81,6 +87,10 @@ fun TagListPreview() {
         "pc",
         "gaming",
     )
-    TagList(tags = tags)
 
+    CattoTheme {
+        Surface {
+            TagList(tags = tags)
+        }
+    }
 }

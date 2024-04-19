@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +29,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,6 +39,7 @@ import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.image.ImagePlaceholder
 import br.com.cattose.app.core.ui.tags.TagList
+import br.com.cattose.app.core.ui.theme.CattoTheme
 import br.com.cattose.app.core.ui.util.halfScreenHeightDp
 import br.com.cattose.app.core.ui.util.halfScreenWidthDp
 import br.com.cattose.app.data.model.domain.Breed
@@ -258,7 +261,8 @@ fun BreedDetailsColumn(
     }
 }
 
-@Preview
+@PreviewLightDark
+@PreviewScreenSizes
 @Composable
 fun DetailScreenPreview() {
     val catDetails = CatDetails(
@@ -282,8 +286,13 @@ fun DetailScreenPreview() {
                     "She is territorial and patrols several times each day to make certain that all is fine."
         )
     )
-    DetailsScreenContent(
-        state = DetailState.Success(catDetails),
-        onBackClick = {},
-        onTryAgainClick = {})
+
+    CattoTheme {
+        Surface {
+            DetailsScreenContent(
+                state = DetailState.Success(catDetails),
+                onBackClick = {},
+                onTryAgainClick = {})
+        }
+    }
 }
