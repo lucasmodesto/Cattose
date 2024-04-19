@@ -20,6 +20,6 @@ Jetpack compose with MVVM sample project using [thecatapi.com](https://thecatapi
 
 ## Api Authentication
 There are some restrictions on the usage without providing the API KEY, which can be set in
-the [secrets](/secrets.properties) file.
+the [secrets](/secrets.properties) file, however it is possible to test the application without the key.
 More details on API
 documentation: [Authenticating your API requests](https://developers.thecatapi.com/view-account/ylX4blBYT9FaoVd6OhvR?report=FJkYOq9tW)
