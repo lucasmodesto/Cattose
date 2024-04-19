@@ -1,6 +1,19 @@
 # Cattose
-Jetpack compose MVVM sample with [thecatapi.com](https://thecatapi.com/) as data source.
+Jetpack compose with MVVM sample project using [thecatapi.com](https://thecatapi.com/) as data source.
 
+## Main Development Libraries
+- [Material3](https://m3.material.io/)
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+- [Coroutines](https://developer.android.com/kotlin/coroutines)
+- [Ktor](https://ktor.io/)
+- [Coil](https://coil-kt.github.io/coil/)
+- [Paging](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
+- [Espresso](https://developer.android.com/training/testing/espresso)
+- [MocKK](https://mockk.io/)
+- [Truth](https://truth.dev/)
+- [Turbine](https://github.com/cashapp/turbine)
+
+## Screenshots
 |                               List screen                                |                               Detail screen                               |
 |:------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
 | <img src="/docs/images/cattose_list_dark_mode.png" width=50% height=50%> | <img src="/docs/images/cattose_detail_darkmode.png" width=50% height=50%> |
