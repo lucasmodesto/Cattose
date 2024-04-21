@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import br.com.cattose.app.data.model.domain.CatDetails
 import br.com.cattose.app.data.repository.CatRepository
+import br.com.cattose.app.feature.detail.navigation.CAT_ID_ARG
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.every
@@ -29,7 +30,7 @@ class DetailViewModelTest {
     @Before
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
-        every<String?> { savedStateHandle["catId"] } returns "id"
+        every<String?> { savedStateHandle[CAT_ID_ARG] } returns "id"
     }
 
     @Test

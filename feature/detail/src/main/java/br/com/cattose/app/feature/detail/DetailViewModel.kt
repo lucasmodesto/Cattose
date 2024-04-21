@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.cattose.app.data.repository.CatRepository
-import br.com.cattose.app.feature.detail.navigation.DetailScreenNavigation
+import br.com.cattose.app.feature.detail.navigation.CAT_ID_ARG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val catId: String = checkNotNull(savedStateHandle[DetailScreenNavigation.CAT_ID])
+    private val catId: String = checkNotNull(savedStateHandle[CAT_ID_ARG])
     private val _state = MutableStateFlow<DetailState>(DetailState.Loading)
     val state: StateFlow<DetailState> = _state
 
