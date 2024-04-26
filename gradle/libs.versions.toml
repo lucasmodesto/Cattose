@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.2"
+tools = "31.3.0"
 kotlin = "1.9.23"
 core-ktx = "1.12.0"
 junit = "4.13.2"
@@ -43,18 +44,18 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 tracing = { group = "androidx.tracing", name = "tracing", version.ref = "tracing" }
 
-## image loader
+## Image loader
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
 
-## hilt
+## Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 
-## network
+## Network
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-serialization-kotlinx = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
@@ -62,7 +63,7 @@ ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-nego
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 log4j-android = { group = "org.slf4j", name = "slf4j-android", version.ref = "log4j" }
 
-## tests
+## Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
@@ -76,6 +77,12 @@ espresso-device = { group = "androidx.test.espresso", name = "espresso-device", 
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging3" }
+
+# Dependencies of the included buildSrc
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "tools" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
 [bundles]
 test-commons = [
@@ -111,3 +118,11 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
+
+cattose-hilt = { id = "cattose.android.hilt", version = "unspecified" }
+cattose-android-application = { id = "cattose.android.application", version = "unspecified" }
+cattose-android-library = { id = "cattose.android.library", version = "unspecified" }
+cattose-application-compose = { id = "cattose.android.application.compose", version = "unspecified" }
+cattose-library-compose = { id = "cattose.android.library.compose", version = "unspecified" }
+cattose-feature = { id = "cattose.android.feature", version = "unspecified" }
+

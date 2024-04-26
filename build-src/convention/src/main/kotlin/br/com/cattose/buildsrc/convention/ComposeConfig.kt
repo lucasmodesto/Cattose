@@ -1,0 +1,26 @@
+package br.com.cattose.buildsrc.convention
+
+import com.android.build.api.dsl.CommonExtension
+import org.gradle.api.Project
+
+internal fun Project.configureAndroidCompose(
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
+) {
+    commonExtension.apply {
+        buildFeatures {
+            compose = true
+        }
+
+        composeOptions {
+            kotlinCompilerExtensionVersion = "1.5.11"
+        }
+
+        @Suppress("UnstableApiUsage")
+        testOptions {
+            unitTests {
+                isIncludeAndroidResources = true
+                isReturnDefaultValues = true
+            }
+        }
+    }
+}
