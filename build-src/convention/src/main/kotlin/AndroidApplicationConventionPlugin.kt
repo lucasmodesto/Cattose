@@ -23,6 +23,10 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     emulatorControl {
                         enable = true
                     }
+                    unitTests {
+                        isIncludeAndroidResources = true
+                        isReturnDefaultValues = true
+                    }
                 }
                 packaging {
                     resources.excludes.addAll(

@@ -14,13 +14,5 @@ internal fun Project.configureAndroidCompose(
         composeOptions {
             kotlinCompilerExtensionVersion = "1.5.11"
         }
-
-        @Suppress("UnstableApiUsage")
-        testOptions {
-            unitTests {
-                isIncludeAndroidResources = true
-                isReturnDefaultValues = true
-            }
-        }
     }
 }

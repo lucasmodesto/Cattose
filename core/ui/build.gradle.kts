@@ -25,7 +25,4 @@ dependencies {
     api(libs.coil)
     api(libs.coil.compose)
     api(libs.coil.gif)
-
-    testImplementation(libs.bundles.test.commons)
-    androidTestImplementation(libs.bundles.android.test.commons)
 }

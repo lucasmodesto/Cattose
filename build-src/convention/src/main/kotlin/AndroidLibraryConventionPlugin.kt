@@ -1,8 +1,10 @@
 import br.com.cattose.buildsrc.convention.configureKotlinAndroid
+import br.com.cattose.buildsrc.convention.testBundleImplementation
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -26,6 +28,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                         }
                     }
                 }
+            }
+            dependencies {
+                testBundleImplementation(target)
             }
         }
     }

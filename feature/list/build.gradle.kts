@@ -9,8 +9,5 @@ android {
 
 dependencies {
     implementation(libs.androidx.compose.paging3)
-    implementation(libs.androidx.hilt.navigation.compose)
-    testImplementation(libs.bundles.test.commons)
     testImplementation(libs.paging.test)
-    androidTestImplementation(libs.bundles.android.test.commons)
 }

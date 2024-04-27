@@ -1,3 +1,4 @@
+import br.com.cattose.buildsrc.convention.androidTestBundleImplementation
 import br.com.cattose.buildsrc.convention.libs
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
@@ -35,6 +36,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                     "implementation",
                     libs.findLibrary("androidx.hilt.navigation.compose").get()
                 )
+                androidTestBundleImplementation(target)
             }
         }
     }
