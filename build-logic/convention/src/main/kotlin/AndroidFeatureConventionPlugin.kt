@@ -1,5 +1,5 @@
-import br.com.cattose.buildsrc.convention.androidTestBundleImplementation
-import br.com.cattose.buildsrc.convention.libs
+import br.com.cattose.buildlogic.convention.androidTestBundleImplementation
+import br.com.cattose.buildlogic.convention.libs
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project

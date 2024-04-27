@@ -1,4 +1,4 @@
-package br.com.cattose.buildsrc.convention
+package br.com.cattose.buildlogic.convention
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.DependencyHandlerScope

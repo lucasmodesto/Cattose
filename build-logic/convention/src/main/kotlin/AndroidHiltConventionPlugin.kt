@@ -1,4 +1,4 @@
-import br.com.cattose.buildsrc.convention.libs
+import br.com.cattose.buildlogic.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies

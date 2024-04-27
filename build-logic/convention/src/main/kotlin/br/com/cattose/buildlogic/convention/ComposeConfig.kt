@@ -1,4 +1,4 @@
-package br.com.cattose.buildsrc.convention
+package br.com.cattose.buildlogic.convention
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project

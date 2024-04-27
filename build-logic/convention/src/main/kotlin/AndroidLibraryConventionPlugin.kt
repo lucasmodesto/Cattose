@@ -1,5 +1,5 @@
-import br.com.cattose.buildsrc.convention.configureKotlinAndroid
-import br.com.cattose.buildsrc.convention.testBundleImplementation
+import br.com.cattose.buildlogic.convention.configureKotlinAndroid
+import br.com.cattose.buildlogic.convention.testBundleImplementation
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project

@@ -1,4 +1,4 @@
-import br.com.cattose.buildsrc.convention.configureAndroidCompose
+import br.com.cattose.buildlogic.convention.configureAndroidCompose
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
