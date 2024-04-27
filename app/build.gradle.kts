@@ -1,24 +1,16 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
-}
-
-apply {
-    from("${project.rootDir.path}/config/compose.gradle")
+    alias(libs.plugins.cattose.android.application)
+    alias(libs.plugins.cattose.application.compose)
+    alias(libs.plugins.cattose.hilt)
 }
 
 android {
     namespace = "br.com.cattose"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "br.com.cattose"
-        minSdk = 26
-        targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -35,29 +27,8 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         buildConfig = true
-    }
-    packaging {
-        resources.excludes.addAll(
-            listOf(
-                "META-INF/LICENSE.md",
-                "META-INF/LICENSE-notice.md",
-                "/META-INF/{AL2.0,LGPL2.1}"
-            )
-        )
-    }
-    testOptions {
-        emulatorControl {
-            enable = true
-        }
     }
 }
 
@@ -65,9 +36,7 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.ui)
 
-    implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
 
     implementation(projects.feature.list)
     implementation(projects.feature.detail)
