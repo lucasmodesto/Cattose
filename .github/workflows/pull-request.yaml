@@ -31,6 +31,9 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Check build-logic
         run: ./gradlew check -p build-logic
 
