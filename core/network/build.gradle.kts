@@ -10,7 +10,6 @@ android {
     buildFeatures {
         buildConfig = true
     }
-
 }
 
 secrets {
