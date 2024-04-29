@@ -70,7 +70,9 @@ jobs:
           api-level: 28
           arch: x86_64
           disable-animations: true
-          script: ./gradlew connectedDemoDebugAndroidTest
+          disk-size: 6000M
+          heap-size: 600M
+          script: ./gradlew connectedDemoDebugAndroidTest --daemon
 
       - name: Upload test reports
         if: always()
