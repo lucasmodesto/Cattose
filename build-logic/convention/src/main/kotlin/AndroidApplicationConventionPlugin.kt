@@ -1,3 +1,4 @@
+import br.com.cattose.buildlogic.convention.configureFlavors
 import br.com.cattose.buildlogic.convention.configureKotlinAndroid
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
@@ -15,6 +16,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
+                configureFlavors(this)
                 defaultConfig.targetSdk = 34
 
                 @Suppress("UnstableApiUsage")
