@@ -4,11 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    rebase-strategy: "disabled"
+    registries: "*"
+    labels: [ "version update" ]
+    open-pull-requests-limit: 10
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    rebase-strategy: "disabled"
-    open-pull-requests-limit: 10
