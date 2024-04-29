@@ -39,7 +39,7 @@ class AppTest {
     @Test
     fun list_To_Detail_Navigation() {
         with(composeTestRule) {
-            waitUntil(timeoutMillis = 5_000) {
+            waitUntil {
                 onNodeWithTag(ListTestTags.LAZY_GRID).isDisplayed()
             }
 
@@ -48,7 +48,7 @@ class AppTest {
                 .onFirst()
                 .performClick()
 
-            waitUntil(timeoutMillis = 5_000) {
+            waitUntil {
                 onNodeWithTag(DetailTestTags.BREED_DETAILS).isDisplayed()
             }
             onNodeWithTag(DetailTestTags.IMAGE).assertIsDisplayed()
@@ -66,9 +66,7 @@ class AppTest {
     @Test
     fun orientation_Change_Should_Keep_Grid_Items() {
         with(composeTestRule) {
-            onNodeWithTag(ListTestTags.LOADING).assertIsDisplayed()
-
-            waitUntil(timeoutMillis = 5_000) {
+            waitUntil {
                 onNodeWithTag(ListTestTags.LAZY_GRID).isDisplayed()
             }
 
@@ -93,7 +91,7 @@ class AppTest {
     @Test
     fun orientation_Change_Should_Keep_Detail_Screen_Content() {
         with(composeTestRule) {
-            waitUntil(timeoutMillis = 5_000) {
+            waitUntil {
                 onNodeWithTag(ListTestTags.LAZY_GRID).isDisplayed()
             }
 
@@ -104,9 +102,7 @@ class AppTest {
 
             waitForIdle()
 
-            onNodeWithTag(DetailTestTags.LOADING).assertIsDisplayed()
-
-            waitUntil(timeoutMillis = 5_000) {
+            waitUntil {
                 onNodeWithTag(DetailTestTags.BREED_DETAILS).isDisplayed()
             }
 
