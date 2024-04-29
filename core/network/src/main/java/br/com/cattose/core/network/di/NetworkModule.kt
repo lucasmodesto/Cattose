@@ -22,7 +22,7 @@ import kotlinx.serialization.json.Json
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+internal object NetworkModule {
 
     @OptIn(ExperimentalSerializationApi::class)
     @Provides

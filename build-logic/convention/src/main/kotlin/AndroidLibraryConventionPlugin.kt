@@ -1,3 +1,4 @@
+import br.com.cattose.buildlogic.convention.configureFlavors
 import br.com.cattose.buildlogic.convention.configureKotlinAndroid
 import br.com.cattose.buildlogic.convention.testBundleImplementation
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
@@ -17,7 +18,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-
+                configureFlavors(this)
                 defaultConfig {
                     @Suppress("UnstableApiUsage")
                     testOptions {
