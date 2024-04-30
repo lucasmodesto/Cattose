@@ -13,7 +13,7 @@ import coil.transform.Transformation
 
 @Composable
 fun DefaultAsyncImage(
-    imageUrl: String,
+    imageUrl: String? = null,
     modifier: Modifier = Modifier,
     loadingPlaceholder: @Composable () -> Unit = {},
     errorPlaceholder: @Composable () -> Unit = {},

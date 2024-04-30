@@ -1,6 +1,9 @@
 package br.com.cattose.app.feature.list
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,10 +42,12 @@ import br.com.cattose.app.data.model.domain.CatImage
 import coil.transform.RoundedCornersTransformation
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun ListScreen(
+fun SharedTransitionScope.ListScreen(
     onItemClick: (CatImage) -> Unit,
     modifier: Modifier = Modifier,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: ListViewModel = hiltViewModel()
 ) {
     val lazyPagingItems = viewModel.catsPagingData.collectAsLazyPagingItems()
@@ -50,16 +55,18 @@ fun ListScreen(
     ListScreenContent(
         lazyPagingItems = lazyPagingItems,
         onItemClick = onItemClick,
-        modifier = modifier
+        modifier = modifier,
+        animatedVisibilityScope = animatedVisibilityScope
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun ListScreenContent(
+fun SharedTransitionScope.ListScreenContent(
     lazyPagingItems: LazyPagingItems<CatImage>,
     modifier: Modifier = Modifier,
-    onItemClick: (CatImage) -> Unit
+    onItemClick: (CatImage) -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     val refreshState = rememberPullToRefreshState()
 
@@ -119,16 +126,22 @@ fun ListScreenContent(
     Box(Modifier.nestedScroll(refreshState.nestedScrollConnection)) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
-            modifier = modifier.padding(8.dp).testTag(ListTestTags.LAZY_GRID)
+            modifier = modifier
+                .padding(8.dp)
+                .testTag(ListTestTags.LAZY_GRID)
         ) {
             items(lazyPagingItems.itemCount) {
                 lazyPagingItems[it]?.let {
                     Box(
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        CatListItem(it, { cat ->
-                            onItemClick(cat)
-                        })
+                        CatListItem(
+                            cat = it,
+                            animatedVisibilityScope = animatedVisibilityScope,
+                            onItemClick = { cat ->
+                                onItemClick(cat)
+                            }
+                        )
                     }
                 }
             }
@@ -168,17 +181,24 @@ fun ListScreenContent(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun CatListItem(
+fun SharedTransitionScope.CatListItem(
     cat: CatImage,
     onItemClick: (CatImage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     DefaultAsyncImage(
         imageUrl = cat.imageUrl,
         modifier = modifier
             .clickable { onItemClick(cat) }
             .height(200.dp)
+            .sharedBounds(
+                sharedContentState = rememberSharedContentState(key = cat.imageUrl),
+                animatedVisibilityScope = animatedVisibilityScope,
+                placeHolderSize = SharedTransitionScope.PlaceHolderSize.contentSize
+            )
             .clip(RoundedCornerShape(8.dp))
             .testTag(cat.id),
         contentScale = ContentScale.Crop,

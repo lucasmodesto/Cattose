@@ -3,6 +3,8 @@ package br.com.cattose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,6 +18,7 @@ import br.com.cattose.app.feature.list.navigation.LIST_SCREEN_ROUTE
 import br.com.cattose.app.feature.list.navigation.listScreen
 import dagger.hilt.android.AndroidEntryPoint
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -29,18 +32,24 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = LIST_SCREEN_ROUTE
-                    ) {
-                        listScreen(
-                            onItemClick = {
-                                navController.navigateToDetail(it.id)
-                            })
-                        detailScreen(
-                            onBackClick = {
-                                navController.navigateUp()
-                            })
+                    SharedTransitionLayout {
+                        NavHost(
+                            navController = navController,
+                            startDestination = LIST_SCREEN_ROUTE,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            listScreen(
+                                navGraphBuilder = this@NavHost,
+                                onItemClick = {
+                                    navController.navigateToDetail(it.id, it.imageUrl)
+                                })
+                            detailScreen(
+                                navGraphBuilder = this@NavHost,
+                                onBackClick = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
                     }
                 }
             }

@@ -1,6 +1,12 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package br.com.cattose.app.feature.detail
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,18 +19,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
@@ -33,203 +40,200 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.cattose.app.core.ui.R
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
-import br.com.cattose.app.core.ui.image.ImagePlaceholder
 import br.com.cattose.app.core.ui.tags.TagList
 import br.com.cattose.app.core.ui.theme.CattoTheme
 import br.com.cattose.app.core.ui.util.halfScreenHeightDp
 import br.com.cattose.app.core.ui.util.halfScreenWidthDp
 import br.com.cattose.app.data.model.domain.Breed
 import br.com.cattose.app.data.model.domain.CatDetails
-import coil.transform.RoundedCornersTransformation
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun DetailScreen(
+fun SharedTransitionScope.DetailScreen(
     onBackClick: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state = viewModel.state.collectAsState()
 
     DetailsScreenContent(
         state = state.value,
         onBackClick = onBackClick,
         onTryAgainClick = {
             viewModel.fetchDetails()
-        }
+        },
+        animatedVisibilityScope = animatedVisibilityScope,
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun DetailsScreenContent(
+fun SharedTransitionScope.DetailsScreenContent(
     state: DetailState,
     onBackClick: () -> Unit,
-    onTryAgainClick: () -> Unit
+    onTryAgainClick: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-    when (state) {
-        is DetailState.Success -> {
-            val configuration = LocalConfiguration.current
-            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                LandscapeDetailScreenContent(
-                    state = state,
-                    onBackClick = onBackClick
-                )
-            } else {
-                PortraitDetailScreenContent(
-                    state = state,
-                    onBackClick = onBackClick
-                )
-            }
-        }
+    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-        DetailState.Loading -> {
-            Box(
+    Row(modifier = Modifier.fillMaxSize()) {
+        if (isLandscape) {
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .testTag(DetailTestTags.LOADING),
-                contentAlignment = Alignment.Center
+                    .weight(1f)
+                    .fillMaxHeight()
             ) {
-                CircularProgressIndicator()
+                Box(modifier = Modifier) {
+                    DefaultAsyncImage(
+                        imageUrl = state.catImageUrl,
+                        contentScale = ContentScale.Crop,
+                        transformations = listOf(),
+                        modifier = Modifier
+                            .width(halfScreenWidthDp())
+                            .fillMaxHeight()
+                            .align(Alignment.TopStart)
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState(key = state.catImageUrl),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                placeHolderSize = SharedTransitionScope.PlaceHolderSize.animatedSize,
+                                renderInOverlayDuringTransition = false
+                            )
+                            .clip(
+                                RoundedCornerShape(
+                                    bottomStart = 8.dp,
+                                    bottomEnd = 8.dp
+                                )
+                            )
+                            .testTag(DetailTestTags.IMAGE)
+                    )
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.content_description_back_button),
+                        modifier = Modifier
+                            .clickable {
+                                onBackClick()
+                            }
+                            .padding(24.dp)
+                            .testTag(DetailTestTags.BACK_BUTTON)
+                    )
+                }
             }
-        }
-
-        DetailState.Error -> {
-            TryAgain(
-                message = stringResource(id = br.com.cattose.app.feature.detail.R.string.error_detail_loading),
-                tryAgainActionText = stringResource(id = R.string.action_retry),
-                onTryAgainClick = onTryAgainClick,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-    }
-}
-
-@Composable
-fun PortraitDetailScreenContent(
-    state: DetailState.Success,
-    onBackClick: () -> Unit
-) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .padding(bottom = 16.dp)
-    ) {
-        Box(
-            modifier = Modifier
-        ) {
-            DefaultAsyncImage(
-                imageUrl = state.cat.imageUrl,
-                contentScale = ContentScale.Crop,
-                transformations = listOf(),
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(halfScreenHeightDp())
-                    .align(Alignment.TopStart)
-                    .testTag(DetailTestTags.IMAGE),
-                errorPlaceholder = {
-                    ImagePlaceholder(
-                        drawable = R.drawable.cat_placeholder,
-                        transformations = listOf(RoundedCornersTransformation(16.dp.value)),
+                    .weight(1f)
+                    .fillMaxHeight()
+            ) {
+                state.catDetails?.mainBreed?.let {
+                    BreedDetailsColumn(
+                        breed = it,
+                        modifier = Modifier
+                            .padding(bottom = 16.dp)
+                            .testTag(DetailTestTags.BREED_DETAILS)
+                    )
+                }
+
+                if (state.isLoading) {
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(300.dp)
+                            .weight(1f)
+                            .testTag(DetailTestTags.LOADING),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                if (state.hasError) {
+                    TryAgain(
+                        message = stringResource(id = br.com.cattose.app.feature.detail.R.string.error_detail_loading),
+                        tryAgainActionText = stringResource(id = R.string.action_retry),
+                        onTryAgainClick = onTryAgainClick,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
                     )
-                },
-                loadingPlaceholder = {
-                    ImagePlaceholder(
-                        drawable = R.drawable.cat_placeholder,
-                        transformations = listOf(RoundedCornersTransformation(16.dp.value)),
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Box(modifier = Modifier) {
+                    DefaultAsyncImage(
+                        imageUrl = state.catImageUrl,
+                        contentScale = ContentScale.Crop,
+                        transformations = listOf(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(halfScreenHeightDp())
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState(key = state.catImageUrl),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                placeHolderSize = SharedTransitionScope.PlaceHolderSize.animatedSize,
+                                renderInOverlayDuringTransition = false
+                            )
+                            .clip(
+                                RoundedCornerShape(
+                                    bottomStart = 8.dp,
+                                    bottomEnd = 8.dp
+                                )
+                            )
+                            .testTag(DetailTestTags.IMAGE)
+                    )
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.content_description_back_button),
+                        modifier = Modifier
+                            .clickable {
+                                onBackClick()
+                            }
+                            .padding(24.dp)
+                            .testTag(DetailTestTags.BACK_BUTTON)
                     )
                 }
-            )
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(id = R.string.content_description_back_button),
-                modifier = Modifier
-                    .clickable {
-                        onBackClick()
-                    }
-                    .padding(16.dp)
-                    .testTag(DetailTestTags.BACK_BUTTON)
-            )
-        }
-        state.cat.mainBreed?.let {
-            BreedDetailsColumn(
-                breed = it,
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .testTag(DetailTestTags.BREED_DETAILS)
-            )
-        }
-    }
-}
 
-@Composable
-fun LandscapeDetailScreenContent(
-    state: DetailState.Success,
-    onBackClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-    ) {
-        Row {
-            Box(
-                modifier = Modifier
-            ) {
-                DefaultAsyncImage(
-                    imageUrl = state.cat.imageUrl,
-                    contentScale = ContentScale.Crop,
-                    transformations = listOf(),
-                    modifier = Modifier
-                        .width(halfScreenWidthDp())
-                        .fillMaxHeight()
-                        .align(Alignment.TopStart)
-                        .testTag(DetailTestTags.IMAGE),
-                    errorPlaceholder = {
-                        ImagePlaceholder(
-                            drawable = R.drawable.cat_placeholder,
-                            transformations = listOf(RoundedCornersTransformation(16.dp.value)),
-                            modifier = Modifier
-                                .width(halfScreenWidthDp())
-                                .fillMaxHeight()
-                        )
-                    },
-                    loadingPlaceholder = {
-                        ImagePlaceholder(
-                            drawable = R.drawable.cat_placeholder,
-                            transformations = listOf(RoundedCornersTransformation(16.dp.value)),
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(halfScreenWidthDp())
+                state.catDetails?.mainBreed?.let {
+                    BreedDetailsColumn(
+                        breed = it,
+                        modifier = Modifier
+                            .padding(bottom = 16.dp)
+                            .testTag(DetailTestTags.BREED_DETAILS)
+                    )
+                }
+
+                if (state.isLoading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .testTag(DetailTestTags.LOADING),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                if (state.hasError) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        TryAgain(
+                            message = stringResource(id = br.com.cattose.app.feature.detail.R.string.error_detail_loading),
+                            tryAgainActionText = stringResource(id = R.string.action_retry),
+                            onTryAgainClick = onTryAgainClick
                         )
                     }
-                )
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(id = R.string.content_description_back_button),
-                    modifier = Modifier
-                        .clickable {
-                            onBackClick()
-                        }
-                        .padding(16.dp)
-                        .testTag(DetailTestTags.BACK_BUTTON),
-                    tint = Color.White
-                )
-            }
-            state.cat.mainBreed?.let {
-                BreedDetailsColumn(
-                    breed = it,
-                    modifier = Modifier
-                        .padding(bottom = 16.dp)
-                        .verticalScroll(rememberScrollState())
-                        .testTag(DetailTestTags.BREED_DETAILS)
-                )
+                }
             }
         }
     }
@@ -264,7 +268,7 @@ fun BreedDetailsColumn(
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
-fun DetailScreenPreview() {
+private fun DetailScreenPreview() {
     val catDetails = CatDetails(
         "id",
         "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg",
@@ -288,11 +292,15 @@ fun DetailScreenPreview() {
     )
 
     CattoTheme {
-        Surface {
-            DetailsScreenContent(
-                state = DetailState.Success(catDetails),
-                onBackClick = {},
-                onTryAgainClick = {})
+        SharedTransitionScope {
+            AnimatedVisibility(visible = true, label = "") {
+                DetailsScreenContent(
+                    state = DetailState(catDetails = catDetails),
+                    onBackClick = {},
+                    onTryAgainClick = {},
+                    animatedVisibilityScope = this
+                )
+            }
         }
     }
 }

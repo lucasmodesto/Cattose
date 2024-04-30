@@ -5,6 +5,7 @@ import app.cash.turbine.test
 import br.com.cattose.app.data.model.domain.CatDetails
 import br.com.cattose.app.data.repository.CatRepository
 import br.com.cattose.app.feature.detail.navigation.CAT_ID_ARG
+import br.com.cattose.app.feature.detail.navigation.IMAGE_URL_ARG
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.every
@@ -31,20 +32,34 @@ class DetailViewModelTest {
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
         every<String?> { savedStateHandle[CAT_ID_ARG] } returns "id"
+        every<String?> { savedStateHandle[IMAGE_URL_ARG] } returns "imageUrl"
     }
 
     @Test
     fun `given cats should emit success state`() = runTest {
-        val cats = mockk<CatDetails>()
+        val catDetails = mockk<CatDetails>()
         coEvery {
             repository.getDetails("id")
-        } returns flowOf(cats)
+        } returns flowOf(catDetails)
 
         viewModel = DetailViewModel(repository, savedStateHandle)
 
         viewModel.state.test {
-            Truth.assertThat(awaitItem()).isEqualTo(DetailState.Loading)
-            Truth.assertThat(awaitItem()).isEqualTo(DetailState.Success(cats))
+            Truth.assertThat(awaitItem())
+                .isEqualTo(
+                    DetailState(
+                        isLoading = true,
+                        catImageUrl = "imageUrl"
+                    )
+                )
+            Truth.assertThat(awaitItem()).isEqualTo(
+                DetailState(
+                    isLoading = false,
+                    hasError = false,
+                    catImageUrl = "imageUrl",
+                    catDetails = catDetails
+                )
+            )
         }
     }
 
@@ -57,8 +72,22 @@ class DetailViewModelTest {
         viewModel = DetailViewModel(repository, savedStateHandle)
 
         viewModel.state.test {
-            Truth.assertThat(awaitItem()).isEqualTo(DetailState.Loading)
-            Truth.assertThat(awaitItem()).isEqualTo(DetailState.Error)
+            Truth.assertThat(awaitItem()).isEqualTo(
+                DetailState(
+                    isLoading = true,
+                    hasError = false,
+                    catImageUrl = "imageUrl",
+                    catDetails = null
+                )
+            )
+            Truth.assertThat(awaitItem()).isEqualTo(
+                DetailState(
+                    isLoading = false,
+                    hasError = true,
+                    catImageUrl = "imageUrl",
+                    catDetails = null
+                )
+            )
         }
     }
 }
