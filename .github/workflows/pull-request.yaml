@@ -67,7 +67,7 @@ jobs:
       - name: Run Android Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 28
+          api-level: 30
           arch: x86_64
           disable-animations: true
           disk-size: 6000M
