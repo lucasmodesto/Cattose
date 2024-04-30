@@ -13,13 +13,14 @@ import coil.transform.Transformation
 
 @Composable
 fun DefaultAsyncImage(
-    imageUrl: String,
     modifier: Modifier = Modifier,
+    imageUrl: String? = null,
     loadingPlaceholder: @Composable () -> Unit = {},
     errorPlaceholder: @Composable () -> Unit = {},
     contentScale: ContentScale = ContentScale.None,
     contentDescription: String? = null,
-    transformations: List<Transformation>? = null
+    transformations: List<Transformation>? = null,
+    crossfade: Boolean = true
 ) {
     SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
@@ -33,7 +34,7 @@ fun DefaultAsyncImage(
                     transformations(it)
                 }
             }
-            .crossfade(true)
+            .crossfade(crossfade)
             .build(),
         loading = {
             loadingPlaceholder()

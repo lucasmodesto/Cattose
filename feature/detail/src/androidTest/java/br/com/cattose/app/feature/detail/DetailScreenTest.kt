@@ -1,23 +1,26 @@
 package br.com.cattose.app.feature.detail
 
 import android.content.Context
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
+import br.com.cattose.app.core.ui.preview.SharedTransitionPreviewTheme
 import br.com.cattose.app.data.model.domain.Breed
 import br.com.cattose.app.data.model.domain.CatDetails
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 class DetailScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun detailScreen_SuccessState() {
+    fun successState() {
         val catDetails = CatDetails(
             id = "id",
             imageUrl = "https://cat1.jpeg",
@@ -30,9 +33,16 @@ class DetailScreenTest {
 
         with(composeTestRule) {
             setContent {
-                DetailsScreenContent(
-                    state = DetailState.Success(catDetails),
-                    onBackClick = {}) {
+                SharedTransitionPreviewTheme {
+                    DetailsScreenContent(
+                        state = DetailState(
+                            catDetails = catDetails,
+                            isLoading = false
+                        ),
+                        onBackClick = {},
+                        onTryAgainClick = {},
+                        animatedVisibilityScope = it
+                    )
                 }
             }
             onNodeWithTag(DetailTestTags.IMAGE).assertExists()
@@ -47,25 +57,36 @@ class DetailScreenTest {
     }
 
     @Test
-    fun detailScreren_LoadingState() {
+    fun loadingState() {
         composeTestRule.setContent {
-            DetailsScreenContent(
-                state = DetailState.Loading,
-                onBackClick = {}) {
+            SharedTransitionPreviewTheme {
+                DetailsScreenContent(
+                    state = DetailState(
+                        isLoading = true
+                    ),
+                    animatedVisibilityScope = it,
+                    onBackClick = {},
+                    onTryAgainClick = {})
             }
         }
         composeTestRule.onNodeWithTag(DetailTestTags.LOADING).assertIsDisplayed()
     }
 
     @Test
-    fun detailScreren_ErrorState() {
+    fun errorState() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val expectedString = context.getString(R.string.error_detail_loading)
 
         composeTestRule.setContent {
-            DetailsScreenContent(
-                state = DetailState.Error,
-                onBackClick = {}) {
+            SharedTransitionPreviewTheme {
+                DetailsScreenContent(
+                    state = DetailState(
+                        isLoading = false,
+                        hasError = true
+                    ),
+                    animatedVisibilityScope = it,
+                    onBackClick = {},
+                    onTryAgainClick = {})
             }
         }
         composeTestRule.onNodeWithText(expectedString).assertIsDisplayed()

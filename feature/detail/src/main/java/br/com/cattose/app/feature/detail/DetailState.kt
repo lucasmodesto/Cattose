@@ -2,8 +2,9 @@ package br.com.cattose.app.feature.detail
 
 import br.com.cattose.app.data.model.domain.CatDetails
 
-sealed interface DetailState {
-    data object Loading : DetailState
-    data object Error : DetailState
-    data class Success(val cat: CatDetails) : DetailState
-}
+data class DetailState(
+    val isLoading: Boolean = true,
+    val hasError: Boolean = false,
+    val catDetails: CatDetails? = null,
+    val catImageUrl: String = ""
+)

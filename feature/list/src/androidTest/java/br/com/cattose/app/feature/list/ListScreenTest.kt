@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package br.com.cattose.app.feature.list
 
 import android.content.Context
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -10,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.test.core.app.ApplicationProvider
+import br.com.cattose.app.core.ui.preview.SharedTransitionPreviewTheme
 import br.com.cattose.app.data.model.domain.CatImage
 import io.mockk.every
 import io.mockk.mockk
@@ -22,7 +26,7 @@ class ListScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun listScreen_SuccessState() {
+    fun successState() {
         val cats = listOf(
             CatImage("1", "https://catimage1.jpg"),
             CatImage("2", "https://catimage2.jpg"),
@@ -42,10 +46,13 @@ class ListScreenTest {
         }
 
         composeTestRule.setContent {
-            ListScreenContent(
-                lazyPagingItems = pagingData,
-                onItemClick = {},
-            )
+            SharedTransitionPreviewTheme {
+                ListScreenContent(
+                    lazyPagingItems = pagingData,
+                    onItemClick = {},
+                    animatedVisibilityScope = it
+                )
+            }
         }
 
         cats.forEach {
@@ -57,7 +64,7 @@ class ListScreenTest {
     }
 
     @Test
-    fun listScreen_LoadingState() {
+    fun loadingState() {
         val pagingData = mockk<LazyPagingItems<CatImage>>(relaxed = true) {
             every { itemSnapshotList.isEmpty() } returns false
             every { itemSnapshotList.isNotEmpty() } returns true
@@ -65,16 +72,19 @@ class ListScreenTest {
         }
 
         composeTestRule.setContent {
-            ListScreenContent(
-                lazyPagingItems = pagingData,
-                onItemClick = {},
-            )
+            SharedTransitionPreviewTheme {
+                ListScreenContent(
+                    lazyPagingItems = pagingData,
+                    onItemClick = {},
+                    animatedVisibilityScope = it
+                )
+            }
         }
         composeTestRule.onNodeWithTag(ListTestTags.LOADING).assertIsDisplayed()
     }
 
     @Test
-    fun listScreen_ErrorState() {
+    fun errorState() {
         val pagingData = mockk<LazyPagingItems<CatImage>>(relaxed = true) {
             every { itemSnapshotList.isEmpty() } returns false
             every { itemSnapshotList.isNotEmpty() } returns true
@@ -84,10 +94,13 @@ class ListScreenTest {
         val expectedString = context.getString(R.string.error_loading_message)
 
         composeTestRule.setContent {
-            ListScreenContent(
-                lazyPagingItems = pagingData,
-                onItemClick = {},
-            )
+            SharedTransitionPreviewTheme {
+                ListScreenContent(
+                    lazyPagingItems = pagingData,
+                    onItemClick = {},
+                    animatedVisibilityScope = it
+                )
+            }
         }
         composeTestRule.onNodeWithText(expectedString).assertIsDisplayed()
     }
