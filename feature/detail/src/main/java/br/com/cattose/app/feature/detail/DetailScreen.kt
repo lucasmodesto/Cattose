@@ -48,7 +48,7 @@ import br.com.cattose.app.core.ui.util.halfScreenWidthDp
 import br.com.cattose.app.data.model.domain.Breed
 import br.com.cattose.app.data.model.domain.CatDetails
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+
 @Composable
 fun SharedTransitionScope.DetailScreen(
     onBackClick: () -> Unit,
@@ -67,7 +67,7 @@ fun SharedTransitionScope.DetailScreen(
     )
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+
 @Composable
 fun SharedTransitionScope.DetailsScreenContent(
     state: DetailState,
