@@ -3,13 +3,12 @@
 package br.com.cattose.app.feature.detail
 
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,12 +17,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
@@ -43,9 +42,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.cattose.app.core.ui.R
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
+import br.com.cattose.app.core.ui.preview.SharedTransitionPreviewTheme
 import br.com.cattose.app.core.ui.tags.TagList
-import br.com.cattose.app.core.ui.theme.CattoTheme
-import br.com.cattose.app.core.ui.util.halfScreenHeightDp
 import br.com.cattose.app.core.ui.util.halfScreenWidthDp
 import br.com.cattose.app.data.model.domain.Breed
 import br.com.cattose.app.data.model.domain.CatDetails
@@ -86,40 +84,15 @@ fun SharedTransitionScope.DetailsScreenContent(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Box(modifier = Modifier) {
-                    DefaultAsyncImage(
-                        imageUrl = state.catImageUrl,
-                        contentScale = ContentScale.Crop,
-                        transformations = listOf(),
-                        modifier = Modifier
-                            .width(halfScreenWidthDp())
-                            .fillMaxHeight()
-                            .align(Alignment.TopStart)
-                            .sharedBounds(
-                                sharedContentState = rememberSharedContentState(key = state.catImageUrl),
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                placeHolderSize = SharedTransitionScope.PlaceHolderSize.animatedSize,
-                                renderInOverlayDuringTransition = false
-                            )
-                            .clip(
-                                RoundedCornerShape(
-                                    bottomStart = 8.dp,
-                                    bottomEnd = 8.dp
-                                )
-                            )
-                            .testTag(DetailTestTags.IMAGE)
-                    )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.content_description_back_button),
-                        modifier = Modifier
-                            .clickable {
-                                onBackClick()
-                            }
-                            .padding(24.dp)
-                            .testTag(DetailTestTags.BACK_BUTTON)
-                    )
-                }
+                DetailsHeader(
+                    imageUrl = state.catImageUrl,
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    onBackClick = onBackClick,
+                    modifier = Modifier
+                        .width(halfScreenWidthDp())
+                        .fillMaxHeight(),
+                    contentScale = ContentScale.FillBounds
+                )
             }
             Column(
                 modifier = Modifier
@@ -127,7 +100,7 @@ fun SharedTransitionScope.DetailsScreenContent(
                     .fillMaxHeight()
             ) {
                 state.catDetails?.mainBreed?.let {
-                    BreedDetailsColumn(
+                    BreedDetails(
                         breed = it,
                         modifier = Modifier
                             .padding(bottom = 16.dp)
@@ -135,28 +108,12 @@ fun SharedTransitionScope.DetailsScreenContent(
                     )
                 }
 
-                if (state.isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .testTag(DetailTestTags.LOADING),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
+                LoadingWithTryAgain(
+                    isLoading = state.isLoading,
+                    hasError = state.hasError,
+                    onTryAgainClick = onTryAgainClick
+                )
 
-                if (state.hasError) {
-                    TryAgain(
-                        message = stringResource(id = br.com.cattose.app.feature.detail.R.string.error_detail_loading),
-                        tryAgainActionText = stringResource(id = R.string.action_retry),
-                        onTryAgainClick = onTryAgainClick,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                    )
-                }
             }
         } else {
             Column(
@@ -165,42 +122,18 @@ fun SharedTransitionScope.DetailsScreenContent(
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
-                Box(modifier = Modifier) {
-                    DefaultAsyncImage(
-                        imageUrl = state.catImageUrl,
-                        contentScale = ContentScale.Crop,
-                        transformations = listOf(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(halfScreenHeightDp())
-                            .sharedBounds(
-                                sharedContentState = rememberSharedContentState(key = state.catImageUrl),
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                placeHolderSize = SharedTransitionScope.PlaceHolderSize.animatedSize,
-                                renderInOverlayDuringTransition = false
-                            )
-                            .clip(
-                                RoundedCornerShape(
-                                    bottomStart = 8.dp,
-                                    bottomEnd = 8.dp
-                                )
-                            )
-                            .testTag(DetailTestTags.IMAGE)
-                    )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.content_description_back_button),
-                        modifier = Modifier
-                            .clickable {
-                                onBackClick()
-                            }
-                            .padding(24.dp)
-                            .testTag(DetailTestTags.BACK_BUTTON)
-                    )
-                }
+                DetailsHeader(
+                    imageUrl = state.catImageUrl,
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    onBackClick = onBackClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    contentScale = ContentScale.FillWidth
+                )
 
                 state.catDetails?.mainBreed?.let {
-                    BreedDetailsColumn(
+                    BreedDetails(
                         breed = it,
                         modifier = Modifier
                             .padding(bottom = 16.dp)
@@ -208,39 +141,90 @@ fun SharedTransitionScope.DetailsScreenContent(
                     )
                 }
 
-                if (state.isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .testTag(DetailTestTags.LOADING),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
-
-                if (state.hasError) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        TryAgain(
-                            message = stringResource(id = br.com.cattose.app.feature.detail.R.string.error_detail_loading),
-                            tryAgainActionText = stringResource(id = R.string.action_retry),
-                            onTryAgainClick = onTryAgainClick
-                        )
-                    }
-                }
+                LoadingWithTryAgain(
+                    isLoading = state.isLoading,
+                    hasError = state.hasError,
+                    onTryAgainClick = onTryAgainClick
+                )
             }
         }
     }
 }
 
 @Composable
-fun BreedDetailsColumn(
+fun SharedTransitionScope.DetailsHeader(
+    imageUrl: String,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onBackClick: () -> Unit,
+    contentScale: ContentScale,
+    modifier: Modifier = Modifier
+) {
+    Box {
+        DefaultAsyncImage(
+            imageUrl = imageUrl,
+            contentScale = contentScale,
+            modifier = modifier
+                .align(Alignment.TopStart)
+                .sharedBounds(
+                    sharedContentState = rememberSharedContentState(key = imageUrl),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    placeHolderSize = SharedTransitionScope.PlaceHolderSize.animatedSize,
+                    renderInOverlayDuringTransition = false // for the back button to show during transition
+                )
+                .testTag(DetailTestTags.IMAGE)
+        )
+        FilledIconButton(
+            modifier = Modifier
+                .padding(16.dp)
+                .testTag(DetailTestTags.BACK_BUTTON),
+            onClick = {
+                onBackClick()
+            }
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(id = R.string.content_description_back_button)
+            )
+        }
+    }
+}
+
+@Composable
+fun ColumnScope.LoadingWithTryAgain(
+    isLoading: Boolean,
+    hasError: Boolean,
+    onTryAgainClick: () -> Unit
+) {
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .testTag(DetailTestTags.LOADING),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+
+    if (hasError) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            TryAgain(
+                message = stringResource(id = br.com.cattose.app.feature.detail.R.string.error_detail_loading),
+                tryAgainActionText = stringResource(id = R.string.action_retry),
+                onTryAgainClick = onTryAgainClick
+            )
+        }
+    }
+}
+
+@Composable
+fun BreedDetails(
     breed: Breed,
     modifier: Modifier = Modifier
 ) {
@@ -291,16 +275,16 @@ private fun DetailScreenPreview() {
         )
     )
 
-    CattoTheme {
-        SharedTransitionScope {
-            AnimatedVisibility(visible = true, label = "") {
-                DetailsScreenContent(
-                    state = DetailState(catDetails = catDetails),
-                    onBackClick = {},
-                    onTryAgainClick = {},
-                    animatedVisibilityScope = this
-                )
-            }
-        }
+    SharedTransitionPreviewTheme {
+        DetailsScreenContent(
+            state = DetailState(
+                catDetails = catDetails,
+                isLoading = false,
+                hasError = false
+            ),
+            onBackClick = {},
+            onTryAgainClick = {},
+            animatedVisibilityScope = it
+        )
     }
 }

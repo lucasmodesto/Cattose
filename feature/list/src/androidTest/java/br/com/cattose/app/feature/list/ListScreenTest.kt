@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package br.com.cattose.app.feature.list
 
 import android.content.Context
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -10,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.test.core.app.ApplicationProvider
+import br.com.cattose.app.core.ui.preview.SharedTransitionPreviewTheme
 import br.com.cattose.app.data.model.domain.CatImage
 import io.mockk.every
 import io.mockk.mockk
@@ -42,10 +46,13 @@ class ListScreenTest {
         }
 
         composeTestRule.setContent {
-            ListScreenContent(
-                lazyPagingItems = pagingData,
-                onItemClick = {},
-            )
+            SharedTransitionPreviewTheme {
+                ListScreenContent(
+                    lazyPagingItems = pagingData,
+                    onItemClick = {},
+                    animatedVisibilityScope = it
+                )
+            }
         }
 
         cats.forEach {
@@ -65,10 +72,13 @@ class ListScreenTest {
         }
 
         composeTestRule.setContent {
-            ListScreenContent(
-                lazyPagingItems = pagingData,
-                onItemClick = {},
-            )
+            SharedTransitionPreviewTheme {
+                ListScreenContent(
+                    lazyPagingItems = pagingData,
+                    onItemClick = {},
+                    animatedVisibilityScope = it
+                )
+            }
         }
         composeTestRule.onNodeWithTag(ListTestTags.LOADING).assertIsDisplayed()
     }
@@ -84,10 +94,13 @@ class ListScreenTest {
         val expectedString = context.getString(R.string.error_loading_message)
 
         composeTestRule.setContent {
-            ListScreenContent(
-                lazyPagingItems = pagingData,
-                onItemClick = {},
-            )
+            SharedTransitionPreviewTheme {
+                ListScreenContent(
+                    lazyPagingItems = pagingData,
+                    onItemClick = {},
+                    animatedVisibilityScope = it
+                )
+            }
         }
         composeTestRule.onNodeWithText(expectedString).assertIsDisplayed()
     }

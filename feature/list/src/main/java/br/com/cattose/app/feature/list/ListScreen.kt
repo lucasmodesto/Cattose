@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+
 package br.com.cattose.app.feature.list
 
 import android.content.res.Configuration
@@ -12,9 +14,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,7 +45,6 @@ import br.com.cattose.app.data.model.domain.CatImage
 import coil.transform.RoundedCornersTransformation
 
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.ListScreen(
     onItemClick: (CatImage) -> Unit,
@@ -60,7 +62,7 @@ fun SharedTransitionScope.ListScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+
 @Composable
 fun SharedTransitionScope.ListScreenContent(
     lazyPagingItems: LazyPagingItems<CatImage>,
@@ -121,11 +123,16 @@ fun SharedTransitionScope.ListScreenContent(
         }
     }
 
-    val columns = getColumnsByOrientation(LocalConfiguration.current.orientation)
+    val columns =
+        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            2
+        } else {
+            3
+        }
 
     Box(Modifier.nestedScroll(refreshState.nestedScrollConnection)) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(columns),
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(columns),
             modifier = modifier
                 .padding(8.dp)
                 .testTag(ListTestTags.LAZY_GRID)
@@ -157,7 +164,7 @@ fun SharedTransitionScope.ListScreenContent(
 
                 LoadState.Loading -> {
                     if (lazyPagingItems.itemSnapshotList.isNotEmpty()) {
-                        item(span = { GridItemSpan(columns) }) {
+                        item(span = StaggeredGridItemSpan.FullLine) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -181,7 +188,6 @@ fun SharedTransitionScope.ListScreenContent(
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.CatListItem(
     cat: CatImage,
@@ -193,7 +199,7 @@ fun SharedTransitionScope.CatListItem(
         imageUrl = cat.imageUrl,
         modifier = modifier
             .clickable { onItemClick(cat) }
-            .height(200.dp)
+            .wrapContentSize()
             .sharedBounds(
                 sharedContentState = rememberSharedContentState(key = cat.imageUrl),
                 animatedVisibilityScope = animatedVisibilityScope,
@@ -201,7 +207,7 @@ fun SharedTransitionScope.CatListItem(
             )
             .clip(RoundedCornerShape(8.dp))
             .testTag(cat.id),
-        contentScale = ContentScale.Crop,
+        contentScale = ContentScale.Inside,
         errorPlaceholder = {
             ImagePlaceholder(
                 drawable = br.com.cattose.app.core.ui.R.drawable.cat_placeholder,
@@ -221,12 +227,4 @@ fun SharedTransitionScope.CatListItem(
             )
         }
     )
-}
-
-private fun getColumnsByOrientation(orientation: Int): Int {
-    return if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-        2
-    } else {
-        3
-    }
 }
