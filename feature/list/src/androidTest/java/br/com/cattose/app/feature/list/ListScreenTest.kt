@@ -26,7 +26,7 @@ class ListScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun listScreen_SuccessState() {
+    fun successState() {
         val cats = listOf(
             CatImage("1", "https://catimage1.jpg"),
             CatImage("2", "https://catimage2.jpg"),
@@ -64,7 +64,7 @@ class ListScreenTest {
     }
 
     @Test
-    fun listScreen_LoadingState() {
+    fun loadingState() {
         val pagingData = mockk<LazyPagingItems<CatImage>>(relaxed = true) {
             every { itemSnapshotList.isEmpty() } returns false
             every { itemSnapshotList.isNotEmpty() } returns true
@@ -84,7 +84,7 @@ class ListScreenTest {
     }
 
     @Test
-    fun listScreen_ErrorState() {
+    fun errorState() {
         val pagingData = mockk<LazyPagingItems<CatImage>>(relaxed = true) {
             every { itemSnapshotList.isEmpty() } returns false
             every { itemSnapshotList.isNotEmpty() } returns true
