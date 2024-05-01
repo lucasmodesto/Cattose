@@ -76,7 +76,7 @@ class AppTest {
 
             onDevice().setScreenOrientation(ScreenOrientation.LANDSCAPE)
 
-            onNodeWithTag(ListTestTags.LOADING).assertIsNotDisplayed()
+            onNodeWithTag(ListTestTags.INITIAL_LOADING).assertIsNotDisplayed()
 
             onNodeWithTag(ListTestTags.LAZY_GRID)
                 .onChildren()

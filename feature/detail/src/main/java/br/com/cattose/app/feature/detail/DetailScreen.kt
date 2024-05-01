@@ -165,10 +165,9 @@ fun SharedTransitionScope.DetailsHeader(
             contentScale = contentScale,
             modifier = modifier
                 .align(Alignment.TopStart)
-                .sharedBounds(
-                    sharedContentState = rememberSharedContentState(key = imageUrl),
+                .sharedElement(
+                    state = rememberSharedContentState(key = imageUrl),
                     animatedVisibilityScope = animatedVisibilityScope,
-                    placeHolderSize = SharedTransitionScope.PlaceHolderSize.animatedSize,
                     renderInOverlayDuringTransition = false // for the back button to show during transition
                 )
                 .testTag(DetailTestTags.IMAGE)
