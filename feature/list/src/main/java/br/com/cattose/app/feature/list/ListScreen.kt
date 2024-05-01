@@ -42,6 +42,11 @@ import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.image.ImagePlaceholder
 import br.com.cattose.app.data.model.domain.CatImage
+import br.com.cattose.app.feature.list.ListTestTags.APPEND_LOADING
+import br.com.cattose.app.feature.list.ListTestTags.EMPTY_LIST
+import br.com.cattose.app.feature.list.ListTestTags.ERROR
+import br.com.cattose.app.feature.list.ListTestTags.INITIAL_LOADING
+import br.com.cattose.app.feature.list.ListTestTags.LAZY_GRID
 import coil.transform.RoundedCornersTransformation
 
 
@@ -84,7 +89,7 @@ fun SharedTransitionScope.ListScreenContent(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .testTag(ListTestTags.LOADING),
+                        .testTag(INITIAL_LOADING),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
@@ -100,23 +105,23 @@ fun SharedTransitionScope.ListScreenContent(
                     onTryAgainClick = {
                         lazyPagingItems.refresh()
                     },
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().testTag(ERROR)
                 )
             }
             refreshState.endRefresh()
         }
 
         is LoadState.NotLoading -> {
-            if (lazyPagingItems.itemSnapshotList.isEmpty() &&
-                lazyPagingItems.loadState.append.endOfPaginationReached
-            ) {
+            if (lazyPagingItems.itemSnapshotList.isEmpty()) {
                 TryAgain(
                     message = stringResource(id = R.string.empty_state_message),
                     tryAgainActionText = stringResource(id = br.com.cattose.app.core.ui.R.string.action_retry),
                     onTryAgainClick = {
                         lazyPagingItems.refresh()
                     },
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag(EMPTY_LIST)
                 )
             }
             refreshState.endRefresh()
@@ -135,7 +140,7 @@ fun SharedTransitionScope.ListScreenContent(
             columns = StaggeredGridCells.Fixed(columns),
             modifier = modifier
                 .padding(8.dp)
-                .testTag(ListTestTags.LAZY_GRID)
+                .testTag(LAZY_GRID)
         ) {
             items(lazyPagingItems.itemCount) {
                 lazyPagingItems[it]?.let {
@@ -168,7 +173,8 @@ fun SharedTransitionScope.ListScreenContent(
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(16.dp),
+                                    .padding(16.dp)
+                                    .testTag(APPEND_LOADING),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center,
                             ) {
@@ -200,10 +206,9 @@ fun SharedTransitionScope.CatListItem(
         modifier = modifier
             .clickable { onItemClick(cat) }
             .wrapContentSize()
-            .sharedBounds(
-                sharedContentState = rememberSharedContentState(key = cat.imageUrl),
-                animatedVisibilityScope = animatedVisibilityScope,
-                placeHolderSize = SharedTransitionScope.PlaceHolderSize.contentSize
+            .sharedElement(
+                state = rememberSharedContentState(key = cat.imageUrl),
+                animatedVisibilityScope = animatedVisibilityScope
             )
             .clip(RoundedCornerShape(8.dp))
             .testTag(cat.id),

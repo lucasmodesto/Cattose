@@ -47,6 +47,9 @@ jobs:
     name: "Instrumented tests"
     runs-on: ubuntu-latest
     timeout-minutes: 55
+    strategy:
+      matrix:
+        api-level: [ 26, 33 ]
 
     steps:
       # From https://github.com/android/nowinandroid/pull/1219/files to fix flaky emulator start
@@ -89,17 +92,17 @@ jobs:
       - name: Run android tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: ${{ matrix.api-level }}
           arch: x86_64
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disk-size: 6000M
           heap-size: 600M
-          script: ./gradlew connectedDemoDebugAndroidTest --daemon
+          script: ./gradlew connectedDemoDebugAndroidTest
 
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
+          name: test-reports-${{ matrix.api-level }}
           path: '**/build/reports/androidTests'
