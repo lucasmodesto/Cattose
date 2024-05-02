@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package br.com.cattose.app.data.model.response
+package br.com.cattose.app.data.asset
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import android.content.Context
+import java.io.InputStream
+import javax.inject.Inject
 
-@Serializable
-data class CatDetailResponse(
-    @SerialName("id") val id: String,
-    @SerialName("url") val url: String,
-    @SerialName("breeds") val breeds: List<BreedResponse>?,
-    @SerialName("width") val width: Int,
-    @SerialName("height") val height: Int
-)
+class DefaultAssetManager @Inject constructor(
+    private val context: Context
+) : AssetManager {
+    override fun open(fileName: String): InputStream =
+        context.assets.open(fileName)
+}

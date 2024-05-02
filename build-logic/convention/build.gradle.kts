@@ -45,6 +45,10 @@ gradlePlugin {
             id = "cattose.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("androidApplicationJacoco") {
+            id = "cattose.android.application.jacoco"
+            implementationClass = "AndroidApplicationJacocoConventionPlugin"
+        }
         register("androidLibrary") {
             id = "cattose.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
@@ -56,6 +60,10 @@ gradlePlugin {
         register("androidComposeLibrary") {
             id = "cattose.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+        register("androidLibraryJacoco") {
+            id = "cattose.android.library.jacoco"
+            implementationClass = "AndroidLibraryJacocoConventionPlugin"
         }
         register("androidFeature") {
             id = "cattose.android.feature"

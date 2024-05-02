@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-import br.com.cattose.buildlogic.convention.configureAndroidCompose
-import com.android.build.gradle.LibraryExtension
+import br.com.cattose.buildlogic.convention.configureJacoco
+import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 
-class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
+class AndroidLibraryJacocoConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply("com.android.library")
-            val extension = extensions.getByType<LibraryExtension>()
-            configureAndroidCompose(extension)
+            pluginManager.apply("jacoco")
+            val androidExtension = extensions.getByType<LibraryExtension>()
+
+            androidExtension.buildTypes.configureEach {
+                enableAndroidTestCoverage = true
+                enableUnitTestCoverage = true
+            }
+
+            configureJacoco(extensions.getByType<LibraryAndroidComponentsExtension>())
         }
     }
 }

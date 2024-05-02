@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.cattose.android.library)
     alias(libs.plugins.cattose.hilt)
     alias(libs.plugins.secrets)
+    alias(libs.plugins.cattose.library.jacoco)
 }
 
 android {

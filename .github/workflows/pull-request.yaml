@@ -6,6 +6,10 @@ on:
       - main
   pull_request:
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
 
   test_and_build:
@@ -38,7 +42,7 @@ jobs:
         run: ./gradlew check -p build-logic
 
       - name: Unit tests
-        run: ./gradlew test
+        run: ./gradlew testDebugUnitTest
 
       - name: Build APK
         run: ./gradlew app:assembleDebug
@@ -99,6 +103,36 @@ jobs:
           disk-size: 6000M
           heap-size: 600M
           script: ./gradlew connectedDemoDebugAndroidTest
+
+      - name: Run unit tests for coverage report
+        if: matrix.api-level == 33
+        run: ./gradlew testDemoDebugUnitTest
+
+      - name: Generate JaCoCo coverage report
+        if: matrix.api-level == 33
+        run: ./gradlew createDemoDebugJacocoReport
+
+      - name: Display local test coverage (only API 33)
+        if: matrix.api-level == 33
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.6.1
+        with:
+          title: Combined test coverage report
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
+          paths: |
+            ${{ github.workspace }}/**/build/reports/jacoco/**/*Report.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload local coverage reports (XML + HTML) (only API 33)
+        if: matrix.api-level == 33
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          if-no-files-found: error
+          compression-level: 1
+          overwrite: false
+          path: '**/build/reports/jacoco/'
 
       - name: Upload test reports
         if: always()

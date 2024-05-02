@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.cattose.android.library)
     alias(libs.plugins.cattose.library.compose)
+    alias(libs.plugins.cattose.library.jacoco)
 }
 
 android {

@@ -28,6 +28,7 @@ paging3 = "3.2.1"
 tracing = "1.2.0"
 androidx-compose = "1.7.0-alpha07"
 navigation-compose = "2.8.0-alpha07"
+jacoco = "0.8.12"
 
 
 [libraries]
@@ -67,6 +68,7 @@ ktor-serialization-kotlinx = { group = "io.ktor", name = "ktor-serialization-kot
 ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 log4j-android = { group = "org.slf4j", name = "slf4j-android", version.ref = "log4j" }
+ktor-client-mock = { group="io.ktor", name="ktor-client-mock", version.ref="ktor"}
 
 ## Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -83,7 +85,7 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging3" }
 
-# Dependencies of the included buildSrc
+# Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "tools" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -126,8 +128,10 @@ secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugi
 
 cattose-hilt = { id = "cattose.android.hilt", version = "unspecified" }
 cattose-android-application = { id = "cattose.android.application", version = "unspecified" }
+cattose-android-application-jacoco = { id = "cattose.android.application.jacoco", version = "unspecified" }
 cattose-android-library = { id = "cattose.android.library", version = "unspecified" }
 cattose-application-compose = { id = "cattose.android.application.compose", version = "unspecified" }
 cattose-library-compose = { id = "cattose.android.library.compose", version = "unspecified" }
+cattose-library-jacoco = { id = "cattose.android.library.jacoco", version = "unspecified" }
 cattose-feature = { id = "cattose.android.feature", version = "unspecified" }
 
