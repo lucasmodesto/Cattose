@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew check -p build-logic
 
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDemoDebugUnitTest
 
       - name: Build APK
         run: ./gradlew app:assembleDebug
