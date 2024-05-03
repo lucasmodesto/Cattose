@@ -1,4 +1,4 @@
-name: Pull requests
+name: Android CI
 
 on:
   push:
@@ -13,7 +13,7 @@ concurrency:
 jobs:
 
   test_and_build:
-    name: "Unit tests and build APK"
+    name: "Unit tests and Build"
     runs-on: ubuntu-latest
 
     permissions:
@@ -48,7 +48,7 @@ jobs:
         run: ./gradlew app:assembleDebug
 
   android_test:
-    name: "Instrumented tests"
+    name: "Android tests and coverage report"
     runs-on: ubuntu-latest
     timeout-minutes: 55
     strategy:
@@ -124,7 +124,7 @@ jobs:
             ${{ github.workspace }}/**/build/reports/jacoco/**/*Report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload local coverage reports (XML + HTML) (only API 33)
+      - name: Upload local coverage reports (only API 33)
         if: matrix.api-level == 33
         uses: actions/upload-artifact@v4
         with:
