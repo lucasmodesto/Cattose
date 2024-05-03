@@ -5,7 +5,13 @@
 </p>
 
 # Cattose
-Jetpack compose sample app. The purpose is to use this code as a playground to test new android features.
+Cattose is a [Jetpack Compose](https://developer.android.com/develop/ui/compose) Sample App. This project serves as a sandbox environment to experiment and explore new features in Android development.
+
+The app currently includes two screens: a list screen that shows cats in a grid, and a detail screen that provides information about the breed of each cat.
+
+## Architecture
+Cattose follows the MVVM pattern with the repository approach and integrates elements of Clean Architecture, such as using dependency injection with interfaces, resulting in a decoupled design that is flexible and adaptable to changes.
+which is aligned to [Android Architecture Guide](https://developer.android.com/topic/architecture) from Google.
 
 ## Main Development Libraries
 - [Material3](https://m3.material.io/)
