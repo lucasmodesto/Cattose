@@ -28,5 +28,5 @@ There are some restrictions on the usage without providing the API KEY, which ca
 the [secrets](/secrets.properties) file, however it is possible to test the application without the key.
 
 ## License
-This project contains code from [nowinandroid] by [Android developers team], licensed under the Apache License, Version 2.0. For more information, see [https://github.com/android/nowinandroid].
+This project contains code and inspirations from [nowinandroid](https://github.com/android/nowinandroid) app, licensed under the Apache License, Version 2.0.
 Cattose is distributed under the terms of the Apache License (Version 2.0). See the [license](LICENSE) for more information.
