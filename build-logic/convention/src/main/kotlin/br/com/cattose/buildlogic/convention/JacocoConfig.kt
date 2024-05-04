@@ -75,6 +75,7 @@ internal fun Project.configureJacoco(
                                     "**/*Response*.*",
                                     "**/*HiltWrapper*.*",
                                     "**/*Module*.*",
+                                    "**/*Route*.*",
                                 )
                             )
                         }
