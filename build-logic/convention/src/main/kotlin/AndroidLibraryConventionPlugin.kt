@@ -44,6 +44,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                             isIncludeAndroidResources = true
                             isReturnDefaultValues = true
                         }
+                        emulatorControl {
+                            enable = true
+                        }
                     }
                 }
             }

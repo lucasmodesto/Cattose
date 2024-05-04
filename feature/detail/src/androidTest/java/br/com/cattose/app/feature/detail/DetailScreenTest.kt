@@ -23,6 +23,10 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.device.DeviceInteraction.Companion.setScreenOrientation
+import androidx.test.espresso.device.EspressoDevice.Companion.onDevice
+import androidx.test.espresso.device.action.ScreenOrientation
+import androidx.test.espresso.device.rules.ScreenOrientationRule
 import br.com.cattose.app.core.ui.preview.SharedTransitionPreviewTheme
 import br.com.cattose.app.data.model.domain.Breed
 import br.com.cattose.app.data.model.domain.CatDetails
@@ -35,41 +39,19 @@ class DetailScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    @get:Rule
+    val screenOrientationRule: ScreenOrientationRule =
+        ScreenOrientationRule(ScreenOrientation.PORTRAIT)
+
     @Test
-    fun successState() {
-        val catDetails = CatDetails(
-            id = "id",
-            imageUrl = "https://cat1.jpeg",
-            mainBreed = Breed(
-                name = "Breed",
-                description = "description",
-                temperaments = listOf("Sweet", "Agile", "Friendly", "Calm")
-            )
-        )
+    fun successStatePortrait() {
+        runSuccessState()
+    }
 
-        with(composeTestRule) {
-            setContent {
-                SharedTransitionPreviewTheme {
-                    DetailsScreenContent(
-                        state = DetailState(
-                            catDetails = catDetails,
-                            isLoading = false
-                        ),
-                        onBackClick = {},
-                        onTryAgainClick = {},
-                        animatedVisibilityScope = it
-                    )
-                }
-            }
-            onNodeWithTag(DetailTestTags.IMAGE).assertExists()
-            onNodeWithTag(DetailTestTags.BREED_DETAILS).assertIsDisplayed()
-            onNodeWithText("Breed").assertIsDisplayed()
-            onNodeWithText("description").assertIsDisplayed()
-
-            catDetails.mainBreed?.temperaments?.forEach {
-                onNodeWithText(it).assertIsDisplayed()
-            }
-        }
+    @Test
+    fun successStateLandscape() {
+        onDevice().setScreenOrientation(ScreenOrientation.LANDSCAPE)
+        runSuccessState()
     }
 
     @Test
@@ -106,5 +88,42 @@ class DetailScreenTest {
             }
         }
         composeTestRule.onNodeWithText(expectedString).assertIsDisplayed()
+    }
+
+    private fun runSuccessState() {
+        val catDetails = CatDetails(
+            id = "id",
+            imageUrl = "https://cat1.jpeg",
+            mainBreed = Breed(
+                name = "Breed",
+                description = "description",
+                temperaments = listOf("Sweet", "Agile", "Friendly", "Calm")
+            )
+        )
+
+        with(composeTestRule) {
+            setContent {
+                SharedTransitionPreviewTheme {
+                    DetailsScreenContent(
+                        state = DetailState(
+                            catDetails = catDetails,
+                            isLoading = false,
+                            hasError = false
+                        ),
+                        onBackClick = {},
+                        onTryAgainClick = {},
+                        animatedVisibilityScope = it
+                    )
+                }
+            }
+            onNodeWithTag(DetailTestTags.IMAGE).assertExists()
+            onNodeWithTag(DetailTestTags.BREED_DETAILS).assertIsDisplayed()
+            onNodeWithText("Breed").assertIsDisplayed()
+            onNodeWithText("description").assertIsDisplayed()
+
+            catDetails.mainBreed?.temperaments?.forEach {
+                onNodeWithText(it).assertIsDisplayed()
+            }
+        }
     }
 }
