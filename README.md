@@ -7,7 +7,7 @@
 # Cattose
 Cattose is a [Jetpack Compose](https://developer.android.com/develop/ui/compose) sample app. This project serves as a sandbox environment to experiment and explore new features in Android development.
 
-The app currently includes two screens: a list screen that shows cats in a grid, and a detail screen that provides information about the breed of each cat.
+The app currently includes two screens: a list screen that shows random kitties images in a grid, and a detail screen that provides information about kitty's breed.
 
 ## Architecture
 Cattose follows the MVVM pattern with the repository approach and integrates elements of Clean Architecture, 
