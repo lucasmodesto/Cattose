@@ -27,8 +27,9 @@ material3 = "1.2.1"
 paging3 = "3.2.1"
 tracing = "1.2.0"
 androidx-compose = "1.7.0-alpha07"
-navigation-compose = "2.8.0-alpha07"
+navigation-compose = "2.8.0-alpha08"
 jacoco = "0.8.12"
+kotlinx-serialization = "1.6.3"
 
 
 [libraries]
@@ -44,11 +45,13 @@ androidx-compose-paging3 = { group = "androidx.paging", name = "paging-compose",
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "androidx-compose" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidx-compose" }
-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "androidx-compose"  }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidx-compose"  }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidx-compose"  }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "androidx-compose" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidx-compose" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidx-compose" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 tracing = { group = "androidx.tracing", name = "tracing", version.ref = "tracing" }
+
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 ## Image loader
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
@@ -68,7 +71,7 @@ ktor-serialization-kotlinx = { group = "io.ktor", name = "ktor-serialization-kot
 ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 log4j-android = { group = "org.slf4j", name = "slf4j-android", version.ref = "log4j" }
-ktor-client-mock = { group="io.ktor", name="ktor-client-mock", version.ref="ktor"}
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
 
 ## Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
