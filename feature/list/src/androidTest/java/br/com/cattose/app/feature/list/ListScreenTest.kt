@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
 
-class ListRouteScreenTest {
+class ListScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
