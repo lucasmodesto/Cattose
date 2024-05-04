@@ -29,9 +29,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply("cattose.android.library")
                 apply("cattose.android.hilt")
                 apply("org.jetbrains.kotlin.plugin.serialization")
-                libs.findPlugin("org.jetbrains.kotlin.plugin.serialization").ifPresent {
-                    apply(it.get().pluginId)
-                }
             }
             extensions.configure<LibraryExtension> {
                 defaultConfig {
