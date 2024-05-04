@@ -20,11 +20,8 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import br.com.cattose.app.data.model.domain.CatDetails
 import br.com.cattose.app.data.repository.CatRepository
-import br.com.cattose.app.feature.detail.navigation.CAT_ID_ARG
-import br.com.cattose.app.feature.detail.navigation.IMAGE_URL_ARG
 import com.google.common.truth.Truth
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,14 +38,14 @@ class DetailViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
     private val repository = mockk<CatRepository>()
-    private val savedStateHandle = mockk<SavedStateHandle>()
+    private val savedStateHandle = SavedStateHandle()
     private lateinit var viewModel: DetailViewModel
 
     @Before
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
-        every<String?> { savedStateHandle[CAT_ID_ARG] } returns "id"
-        every<String?> { savedStateHandle[IMAGE_URL_ARG] } returns "imageUrl"
+        savedStateHandle["id"] = "id"
+        savedStateHandle["imageUrl"] = "imageUrl"
     }
 
     @Test
@@ -105,19 +102,5 @@ class DetailViewModelTest {
                 )
             )
         }
-    }
-
-    @Test(expected = IllegalStateException::class)
-    fun `given null catId should throw exception`() {
-        every<String?> { savedStateHandle[CAT_ID_ARG] } returns null
-
-        viewModel = DetailViewModel(repository, savedStateHandle)
-    }
-
-    @Test(expected = IllegalStateException::class)
-    fun `given null imageUrl should throw exception`() {
-        every<String?> { savedStateHandle[IMAGE_URL_ARG] } returns null
-
-        viewModel = DetailViewModel(repository, savedStateHandle)
     }
 }

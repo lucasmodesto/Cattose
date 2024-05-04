@@ -28,6 +28,10 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             pluginManager.apply {
                 apply("cattose.android.library")
                 apply("cattose.android.hilt")
+                apply("org.jetbrains.kotlin.plugin.serialization")
+                libs.findPlugin("org.jetbrains.kotlin.plugin.serialization").ifPresent {
+                    apply(it.get().pluginId)
+                }
             }
             extensions.configure<LibraryExtension> {
                 defaultConfig {
@@ -50,6 +54,10 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add(
                     "implementation",
                     libs.findLibrary("androidx.hilt.navigation.compose").get()
+                )
+                add(
+                    "implementation",
+                    libs.findLibrary("kotlinx.serialization").get()
                 )
                 androidTestBundleImplementation(target)
             }

@@ -30,7 +30,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-class DetailScreenTest {
+class DetailRouteScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

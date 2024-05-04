@@ -19,9 +19,9 @@ package br.com.cattose.app.feature.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import br.com.cattose.app.data.repository.CatRepository
-import br.com.cattose.app.feature.detail.navigation.CAT_ID_ARG
-import br.com.cattose.app.feature.detail.navigation.IMAGE_URL_ARG
+import br.com.cattose.app.feature.detail.navigation.DetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,9 +36,8 @@ class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val catId: String = checkNotNull(savedStateHandle[CAT_ID_ARG])
-    private val imageUrl: String = checkNotNull(savedStateHandle[IMAGE_URL_ARG])
-    private val _state = MutableStateFlow(DetailState(catImageUrl = imageUrl))
+    private val routeArgs: DetailRoute = savedStateHandle.toRoute()
+    private val _state = MutableStateFlow(DetailState(catImageUrl = routeArgs.imageUrl))
     val state: StateFlow<DetailState> = _state
 
     init {
@@ -53,7 +52,7 @@ class DetailViewModel @Inject constructor(
                     hasError = false
                 )
             }
-            repository.getDetails(catId).catch {
+            repository.getDetails(routeArgs.id).catch {
                 _state.update {
                     it.copy(
                         isLoading = false,

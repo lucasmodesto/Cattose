@@ -26,12 +26,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.cattose.app.core.ui.theme.CattoTheme
-import br.com.cattose.app.feature.detail.navigation.detailScreen
-import br.com.cattose.app.feature.detail.navigation.navigateToDetail
-import br.com.cattose.app.feature.list.navigation.LIST_SCREEN_ROUTE
-import br.com.cattose.app.feature.list.navigation.listScreen
+import br.com.cattose.app.feature.detail.DetailScreen
+import br.com.cattose.app.feature.detail.navigation.DetailRoute
+import br.com.cattose.app.feature.list.ListScreen
+import br.com.cattose.app.feature.list.navigation.ListRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -51,20 +52,27 @@ class MainActivity : ComponentActivity() {
                     SharedTransitionLayout {
                         NavHost(
                             navController = navController,
-                            startDestination = LIST_SCREEN_ROUTE,
+                            startDestination = ListRoute,
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            listScreen(
-                                navGraphBuilder = this@NavHost,
-                                onItemClick = {
-                                    navController.navigateToDetail(it.id, it.imageUrl)
-                                })
-                            detailScreen(
-                                navGraphBuilder = this@NavHost,
-                                onBackClick = {
-                                    navController.popBackStack()
-                                }
-                            )
+                            composable<ListRoute> {
+                                ListScreen(onItemClick = {
+                                    navController.navigate(
+                                        DetailRoute(
+                                            id = it.id,
+                                            imageUrl = it.imageUrl
+                                        )
+                                    )
+                                }, animatedVisibilityScope = this)
+                            }
+                            composable<DetailRoute> {
+                                DetailScreen(
+                                    onBackClick = {
+                                        navController.navigateUp()
+                                    },
+                                    animatedVisibilityScope = this
+                                )
+                            }
                         }
                     }
                 }
