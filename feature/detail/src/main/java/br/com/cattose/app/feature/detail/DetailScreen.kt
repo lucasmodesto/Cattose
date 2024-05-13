@@ -114,6 +114,7 @@ fun SharedTransitionScope.DetailsScreenContent(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
             ) {
                 state.catDetails?.mainBreed?.let {
                     BreedDetails(
