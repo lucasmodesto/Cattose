@@ -89,6 +89,7 @@ espresso-device = { group = "androidx.test.espresso", name = "espresso-device", 
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging3" }
+navigation-test = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigation-compose" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -104,9 +105,12 @@ test-commons = [
     "turbine",
     "mockk",
     "coroutines-test",
-    "androidx-test-core-arch"
+    "androidx-test-core-arch",
+    "navigation-test"
 ]
 android-test-commons = [
+    "truth",
+    "turbine",
     "mockk-android",
     "androidx-test-ext-junit",
     "espresso-core",

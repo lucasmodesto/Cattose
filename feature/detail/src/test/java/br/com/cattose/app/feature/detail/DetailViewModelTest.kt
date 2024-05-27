@@ -17,9 +17,11 @@
 package br.com.cattose.app.feature.detail
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.testing.invoke
 import app.cash.turbine.test
 import br.com.cattose.app.data.model.domain.CatDetails
 import br.com.cattose.app.data.repository.CatRepository
+import br.com.cattose.app.feature.detail.navigation.DetailRoute
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -38,14 +40,14 @@ class DetailViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
     private val repository = mockk<CatRepository>()
-    private val savedStateHandle = SavedStateHandle()
+    private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var viewModel: DetailViewModel
 
     @Before
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
-        savedStateHandle["id"] = "id"
-        savedStateHandle["imageUrl"] = "imageUrl"
+        savedStateHandle = SavedStateHandle(DetailRoute("id", "imageUrl"))
+        TODO("It only works in AndroidTest right now, need to figure it out a way to unit test viewModel")
     }
 
     @Test
