@@ -15,19 +15,14 @@
  */
 package br.com.cattose.buildlogic.convention
 
-import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 
-internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = "1.5.14"
-        }
+internal fun Project.configureAndroidCompose() {
+    pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+    with(extensions.getByType<ComposeCompilerGradlePluginExtension>()) {
+        enableStrongSkippingMode.set(true)
+        includeSourceInformation.set(true)
     }
 }
