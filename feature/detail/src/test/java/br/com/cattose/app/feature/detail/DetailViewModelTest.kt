@@ -40,14 +40,14 @@ class DetailViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
     private val repository = mockk<CatRepository>()
-    private lateinit var savedStateHandle: SavedStateHandle
+    private val savedStateHandle = SavedStateHandle(DetailRoute("id", "imageUrl"))
+    // TODO: ("It only works in AndroidTest right now, need to figure it out a way to unit test viewModel")
+
     private lateinit var viewModel: DetailViewModel
 
     @Before
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
-        savedStateHandle = SavedStateHandle(DetailRoute("id", "imageUrl"))
-        TODO("It only works in AndroidTest right now, need to figure it out a way to unit test viewModel")
     }
 
     @Test
