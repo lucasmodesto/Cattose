@@ -19,6 +19,7 @@ package br.com.cattose.buildlogic.convention
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
@@ -34,6 +35,7 @@ internal fun Project.configureKotlinAndroid(
         }
 
         compileOptions {
+            isCoreLibraryDesugaringEnabled = true
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
@@ -42,5 +44,9 @@ internal fun Project.configureKotlinAndroid(
         compilerOptions {
             jvmTarget.set(JVM_17)
         }
+    }
+
+    dependencies {
+        add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
     }
 }
