@@ -109,8 +109,6 @@ test-commons = [
     "navigation-test"
 ]
 android-test-commons = [
-    "truth",
-    "turbine",
     "mockk-android",
     "androidx-test-ext-junit",
     "espresso-core",
