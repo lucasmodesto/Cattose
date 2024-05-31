@@ -30,6 +30,7 @@ androidx-compose = "1.7.0-beta01"
 navigation-compose = "2.8.0-alpha08"
 jacoco = "0.8.12"
 kotlinx-serialization = "1.6.3"
+desugar = "2.0.4"
 
 
 [libraries]
@@ -52,6 +53,7 @@ material3 = { group = "androidx.compose.material3", name = "material3", version.
 tracing = { group = "androidx.tracing", name = "tracing", version.ref = "tracing" }
 
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
 
 ## Image loader
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
