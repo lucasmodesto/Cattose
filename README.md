@@ -25,6 +25,7 @@ aligned to [Android Architecture Guide](https://developer.android.com/topic/arch
 - [MocKK](https://mockk.io/)
 - [Truth](https://truth.dev/)
 - [Turbine](https://github.com/cashapp/turbine)
+- [Paparazzi](https://github.com/cashapp/paparazzi)
 
 ## Screenshots
 |                               List screen                                |                               Detail screen                               |

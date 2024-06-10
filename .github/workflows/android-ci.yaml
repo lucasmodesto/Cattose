@@ -13,7 +13,7 @@ concurrency:
 jobs:
 
   test_and_build:
-    name: "Unit tests and Build"
+    name: "Unit and Snapshot tests and Build debug APK"
     runs-on: ubuntu-latest
 
     permissions:
@@ -43,6 +43,9 @@ jobs:
 
       - name: Unit tests
         run: ./gradlew testDemoDebugUnitTest
+
+      - name: Snapshot tests
+        run: ./gradlew core:ui:verifyPaparazziDemoDebug
 
       - name: Build APK
         run: ./gradlew app:assembleDebug
