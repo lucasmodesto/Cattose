@@ -32,6 +32,7 @@ jacoco = "0.8.12"
 kotlinx-serialization = "1.7.0"
 desugar = "2.0.4"
 paparazzi = "1.3.4"
+test-parameter-injector = "1.16"
 
 
 [libraries]
@@ -90,7 +91,7 @@ espresso-device = { group = "androidx.test.espresso", name = "espresso-device", 
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging3" }
-google-testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.16" }
+google-testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "test-parameter-injector" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -134,7 +135,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi"}
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 cattose-hilt = { id = "cattose.android.hilt", version = "unspecified" }
 cattose-android-application = { id = "cattose.android.application", version = "unspecified" }
