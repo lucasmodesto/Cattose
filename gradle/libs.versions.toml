@@ -29,7 +29,7 @@ tracing = "1.2.0"
 androidx-compose = "1.7.0-beta02"
 navigation-compose = "2.8.0-alpha08"
 jacoco = "0.8.12"
-kotlinx-serialization = "1.6.3"
+kotlinx-serialization = "1.7.0"
 desugar = "2.0.4"
 
 
