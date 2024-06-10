@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v3
@@ -41,11 +43,11 @@ jobs:
       - name: Check build-logic
         run: ./gradlew check -p build-logic
 
-      - name: Unit tests
-        run: ./gradlew testDemoDebugUnitTest
-
       - name: Snapshot tests
         run: ./gradlew core:ui:verifyPaparazziDemoDebug
+
+      - name: Unit tests
+        run: ./gradlew testDemoDebugUnitTest
 
       - name: Build APK
         run: ./gradlew app:assembleDebug
