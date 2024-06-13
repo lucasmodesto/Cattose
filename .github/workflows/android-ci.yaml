@@ -13,7 +13,7 @@ concurrency:
 jobs:
 
   test_and_build:
-    name: "Unit tests and Build"
+    name: "Unit and Snapshot tests and Build debug APK"
     runs-on: ubuntu-latest
 
     permissions:
@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v3
@@ -40,6 +42,9 @@ jobs:
 
       - name: Check build-logic
         run: ./gradlew check -p build-logic
+
+      - name: Snapshot tests
+        run: ./gradlew core:ui:verifyPaparazziDemoDebug
 
       - name: Unit tests
         run: ./gradlew testDemoDebugUnitTest

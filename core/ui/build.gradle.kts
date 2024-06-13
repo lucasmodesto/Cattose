@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.cattose.android.library)
     alias(libs.plugins.cattose.library.compose)
     alias(libs.plugins.cattose.library.jacoco)
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -27,4 +28,6 @@ dependencies {
     api(libs.coil)
     api(libs.coil.compose)
     api(libs.coil.gif)
+
+    testImplementation(libs.google.testParameterInjector)
 }
