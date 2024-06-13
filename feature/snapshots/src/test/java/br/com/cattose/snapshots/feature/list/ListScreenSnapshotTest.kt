@@ -1,5 +1,6 @@
 package br.com.cattose.snapshots.feature.list
 
+import androidx.compose.ui.platform.ComposeView
 import br.com.cattose.app.feature.list.ListScreenAppendLoadingPreview
 import br.com.cattose.app.feature.list.ListScreenEmptyPreview
 import br.com.cattose.app.feature.list.ListScreenErrorPreview
@@ -34,15 +35,19 @@ class ListScreenSnapshotTest(
 
     @Test
     fun refreshLoadingState() {
-        paparazzi.snapshot {
+        val view = ComposeView(paparazzi.context)
+        view.setContent {
             ListScreenRefreshLoadingPreview()
         }
+        paparazzi.gif(view = view)
     }
 
     @Test
     fun appendLoadingState() {
-        paparazzi.snapshot {
+        val view = ComposeView(paparazzi.context)
+        view.setContent {
             ListScreenAppendLoadingPreview()
         }
+        paparazzi.gif(view = view)
     }
 }

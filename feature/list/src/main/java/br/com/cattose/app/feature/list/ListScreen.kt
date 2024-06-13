@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -265,7 +264,7 @@ fun ListScreenSuccessPreview() {
     SharedTransitionPreviewTheme {
         val cats = mutableListOf<CatImage>()
         repeat(10) {
-            cats.add(CatImage(it.toString(), "https://catimage1.jpg"))
+            cats.add(CatImage(it.toString(), "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg"))
         }
 
         val pagingDataFlow = flowOf(
@@ -320,7 +319,7 @@ fun ListScreenRefreshLoadingPreview() {
 fun ListScreenAppendLoadingPreview() {
     val cats = mutableListOf<CatImage>()
     repeat(3) {
-        cats.add(CatImage(it.toString(), "https://catimage1.jpg"))
+        cats.add(CatImage(it.toString(), "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg"))
     }
 
     SharedTransitionPreviewTheme {

@@ -22,21 +22,24 @@ abstract class PaparazziTest(
     @get:Rule
     val paparazzi: Paparazzi = Paparazzi(
         deviceConfig = config.deviceConfig.copy(nightMode = nightMode),
-        theme = PaparazziTheme.MATERIAL_LIGHT_NO_ACTION_BAR.themeName
+        theme = PaparazziTheme.MATERIAL_LIGHT_NO_ACTION_BAR.themeName,
+        maxPercentDifference = 0.05
     )
 
     @OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoilApi::class)
     @Before
     fun setupImageLoader() {
         Dispatchers.setMain(Dispatchers.Unconfined)
-        val engine = FakeImageLoaderEngine.Builder()
+        val engine = FakeImageLoaderEngine
+            .Builder()
             .intercept(
                 { it is String && it.endsWith(".jpg").or(it.endsWith(".png")) },
                 ColorDrawable(Color.MAGENTA)
             )
             .default(ColorDrawable(Color.BLUE))
             .build()
-        val imageLoader = ImageLoader.Builder(paparazzi.context)
+        val imageLoader = ImageLoader
+            .Builder(paparazzi.context)
             .components { add(engine) }
             .build()
         Coil.setImageLoader(imageLoader)

@@ -1,5 +1,6 @@
 package br.com.cattose.snapshots.feature.detail
 
+import androidx.compose.ui.platform.ComposeView
 import br.com.cattose.app.feature.detail.DetailScreenErrorPreview
 import br.com.cattose.app.feature.detail.DetailScreenLoadingPreview
 import br.com.cattose.app.feature.detail.DetailScreenSuccessPreview
@@ -33,8 +34,10 @@ class DetailScreenSnapshotTest(
 
     @Test
     fun loadingState() {
-        paparazzi.snapshot {
+        val view = ComposeView(paparazzi.context)
+        view.setContent {
             DetailScreenLoadingPreview()
         }
+        paparazzi.gif(view)
     }
 }

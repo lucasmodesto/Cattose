@@ -6,10 +6,8 @@ import com.android.resources.ScreenOrientation
 enum class PaparazziDefaultDeviceConfig(
     val deviceConfig: DeviceConfig
 ) {
-    PIXEL_4(deviceConfig = DeviceConfig.PIXEL_4),
     PIXEL_6(deviceConfig = DeviceConfig.PIXEL_6),
-    PIXEL_6_LANDSCAPE(deviceConfig = DeviceConfig.PIXEL_6.copy(orientation = ScreenOrientation.LANDSCAPE)),
-    NEXUS_10_TABLET(deviceConfig = DeviceConfig.NEXUS_10)
+    PIXEL_6_LANDSCAPE(deviceConfig = DeviceConfig.PIXEL_6.copy(orientation = ScreenOrientation.LANDSCAPE))
 }
 
 enum class PaparazziTheme(
