@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -37,6 +38,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
@@ -49,14 +51,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.image.ImagePlaceholder
+import br.com.cattose.app.core.ui.preview.SharedTransitionPreviewTheme
 import br.com.cattose.app.data.model.domain.CatImage
 import br.com.cattose.app.feature.list.ListTestTags.APPEND_LOADING
 import br.com.cattose.app.feature.list.ListTestTags.EMPTY_LIST
@@ -64,6 +71,7 @@ import br.com.cattose.app.feature.list.ListTestTags.ERROR
 import br.com.cattose.app.feature.list.ListTestTags.INITIAL_LOADING
 import br.com.cattose.app.feature.list.ListTestTags.LAZY_GRID
 import coil.transform.RoundedCornersTransformation
+import kotlinx.coroutines.flow.flowOf
 
 
 @Composable
@@ -248,4 +256,143 @@ fun SharedTransitionScope.CatListItem(
             )
         }
     )
+}
+
+@PreviewLightDark
+@PreviewScreenSizes
+@Composable
+fun ListScreenSuccessPreview() {
+    SharedTransitionPreviewTheme {
+        val cats = mutableListOf<CatImage>()
+        repeat(10) {
+            cats.add(CatImage(it.toString(), "https://catimage1.jpg"))
+        }
+
+        val pagingDataFlow = flowOf(
+            PagingData.from(
+                data = cats, sourceLoadStates = LoadStates(
+                    refresh = LoadState.NotLoading(false),
+                    prepend = LoadState.NotLoading(false),
+                    append = LoadState.NotLoading(false)
+                )
+            )
+        )
+
+        Surface {
+            ListScreenContent(
+                lazyPagingItems = pagingDataFlow.collectAsLazyPagingItems(),
+                onItemClick = {},
+                animatedVisibilityScope = it
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewScreenSizes
+@Composable
+fun ListScreenRefreshLoadingPreview() {
+    SharedTransitionPreviewTheme {
+        val pagingDataFlow = flowOf(
+            PagingData.from(
+                data = emptyList<CatImage>(),
+                sourceLoadStates = LoadStates(
+                    refresh = LoadState.Loading,
+                    prepend = LoadState.NotLoading(false),
+                    append = LoadState.NotLoading(false)
+                )
+            )
+        )
+
+        Surface {
+            ListScreenContent(
+                lazyPagingItems = pagingDataFlow.collectAsLazyPagingItems(),
+                onItemClick = {},
+                animatedVisibilityScope = it
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewScreenSizes
+@Composable
+fun ListScreenAppendLoadingPreview() {
+    val cats = mutableListOf<CatImage>()
+    repeat(3) {
+        cats.add(CatImage(it.toString(), "https://catimage1.jpg"))
+    }
+
+    SharedTransitionPreviewTheme {
+        val pagingDataFlow = flowOf(
+            PagingData.from(
+                data = cats,
+                sourceLoadStates = LoadStates(
+                    refresh = LoadState.NotLoading(false),
+                    prepend = LoadState.NotLoading(false),
+                    append = LoadState.Loading
+                )
+            )
+        )
+
+        Surface {
+            ListScreenContent(
+                lazyPagingItems = pagingDataFlow.collectAsLazyPagingItems(),
+                onItemClick = {},
+                animatedVisibilityScope = it
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewScreenSizes
+@Composable
+fun ListScreenErrorPreview() {
+    SharedTransitionPreviewTheme {
+        val pagingDataFlow = flowOf(
+            PagingData.from(
+                data = emptyList<CatImage>(),
+                sourceLoadStates = LoadStates(
+                    refresh = LoadState.Error(Exception()),
+                    prepend = LoadState.NotLoading(false),
+                    append = LoadState.NotLoading(false)
+                )
+            )
+        )
+
+        Surface {
+            ListScreenContent(
+                lazyPagingItems = pagingDataFlow.collectAsLazyPagingItems(),
+                onItemClick = {},
+                animatedVisibilityScope = it
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewScreenSizes
+@Composable
+fun ListScreenEmptyPreview() {
+    SharedTransitionPreviewTheme {
+        val pagingDataFlow = flowOf(
+            PagingData.from(
+                data = emptyList<CatImage>(),
+                sourceLoadStates = LoadStates(
+                    refresh = LoadState.NotLoading(false),
+                    prepend = LoadState.NotLoading(false),
+                    append = LoadState.NotLoading(false)
+                )
+            )
+        )
+
+        Surface {
+            ListScreenContent(
+                lazyPagingItems = pagingDataFlow.collectAsLazyPagingItems(),
+                onItemClick = {},
+                animatedVisibilityScope = it
+            )
+        }
+    }
 }

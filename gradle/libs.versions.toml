@@ -92,6 +92,8 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging3" }
 google-testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "test-parameter-injector" }
+coil-test = { group = "io.coil-kt", name = "coil-test", version.ref = "coil" }
+paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -107,7 +109,8 @@ test-commons = [
     "turbine",
     "mockk",
     "coroutines-test",
-    "androidx-test-core-arch"
+    "androidx-test-core-arch",
+    "google-testParameterInjector"
 ]
 android-test-commons = [
     "mockk-android",

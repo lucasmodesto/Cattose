@@ -1,4 +1,4 @@
-package br.com.cattose.app.core.ui
+package br.com.cattose.snapshot_test_tools
 
 import app.cash.paparazzi.DeviceConfig
 import com.android.resources.ScreenOrientation
