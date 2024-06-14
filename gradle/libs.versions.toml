@@ -109,7 +109,6 @@ test-commons = [
     "turbine",
     "mockk",
     "coroutines-test",
-    "androidx-test-core-arch",
     "google-testParameterInjector"
 ]
 android-test-commons = [
