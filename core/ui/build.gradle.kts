@@ -29,5 +29,5 @@ dependencies {
     api(libs.coil.compose)
     api(libs.coil.gif)
 
-    testImplementation(libs.google.testParameterInjector)
+    testImplementation(projects.core.snapshotTestTools)
 }

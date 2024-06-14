@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -42,6 +43,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -145,7 +147,8 @@ fun SharedTransitionScope.DetailsScreenContent(
                     onBackClick = onBackClick,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
+                        .wrapContentHeight()
+                        .heightIn(min = 200.dp),
                     contentScale = ContentScale.FillWidth
                 )
 
@@ -268,7 +271,7 @@ fun BreedDetails(
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
-private fun DetailScreenPreview() {
+fun DetailScreenSuccessPreview() {
     val catDetails = CatDetails(
         "id",
         "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg",
@@ -292,15 +295,59 @@ private fun DetailScreenPreview() {
     )
 
     SharedTransitionPreviewTheme {
-        DetailsScreenContent(
-            state = DetailState(
-                catDetails = catDetails,
-                isLoading = false,
-                hasError = false
-            ),
-            onBackClick = {},
-            onTryAgainClick = {},
-            animatedVisibilityScope = it
-        )
+        Surface {
+            DetailsScreenContent(
+                state = DetailState(
+                    catDetails = catDetails,
+                    isLoading = false,
+                    hasError = false,
+                    catImageUrl = catDetails.imageUrl
+                ),
+                onBackClick = {},
+                onTryAgainClick = {},
+                animatedVisibilityScope = it
+            )
+        }
+    }
+}
+
+
+@PreviewLightDark
+@PreviewScreenSizes
+@Composable
+fun DetailScreenErrorPreview() {
+    SharedTransitionPreviewTheme {
+        Surface {
+            DetailsScreenContent(
+                state = DetailState(
+                    isLoading = false,
+                    hasError = true,
+                    catImageUrl = "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg"
+                ),
+                onBackClick = {},
+                onTryAgainClick = {},
+                animatedVisibilityScope = it
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewScreenSizes
+@Composable
+fun DetailScreenLoadingPreview() {
+    SharedTransitionPreviewTheme {
+        Surface {
+            DetailsScreenContent(
+                state = DetailState(
+                    isLoading = true,
+                    hasError = false,
+                    catImageUrl = "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg"
+                ),
+                onBackClick = {},
+                onTryAgainClick = {},
+                animatedVisibilityScope = it
+            )
+        }
     }
 }
