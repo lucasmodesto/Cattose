@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Rule
 
 abstract class PaparazziTest(
-    config: PaparazziDefaultDeviceConfig,
+    config: PaparazziConfig,
     nightMode: NightMode
 ) {
 
