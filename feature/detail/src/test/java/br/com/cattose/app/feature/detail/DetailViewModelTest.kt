@@ -17,9 +17,11 @@
 package br.com.cattose.app.feature.detail
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.testing.invoke
 import app.cash.turbine.test
 import br.com.cattose.app.data.model.domain.CatDetails
 import br.com.cattose.app.data.repository.CatRepository
+import br.com.cattose.app.feature.detail.navigation.DetailRoute
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -32,20 +34,21 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
     private val repository = mockk<CatRepository>()
-    private val savedStateHandle = SavedStateHandle()
+    private val savedStateHandle = SavedStateHandle(DetailRoute("id", "imageUrl"))
     private lateinit var viewModel: DetailViewModel
 
     @Before
     fun setupMainDispatcher() {
         Dispatchers.setMain(dispatcher)
-        savedStateHandle["id"] = "id"
-        savedStateHandle["imageUrl"] = "imageUrl"
     }
 
     @Test
