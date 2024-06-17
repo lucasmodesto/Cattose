@@ -34,15 +34,16 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
     private val repository = mockk<CatRepository>()
     private val savedStateHandle = SavedStateHandle(DetailRoute("id", "imageUrl"))
-    // TODO: ("It only works in AndroidTest right now, need to figure it out a way to unit test viewModel")
-
     private lateinit var viewModel: DetailViewModel
 
     @Before
