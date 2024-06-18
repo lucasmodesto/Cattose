@@ -43,7 +43,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,19 +51,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.cattose.app.core.ui.R
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
-import br.com.cattose.app.core.ui.preview.SharedTransitionPreviewTheme
 import br.com.cattose.app.core.ui.tags.TagList
 import br.com.cattose.app.core.ui.util.halfScreenWidthDp
 import br.com.cattose.app.data.model.domain.Breed
-import br.com.cattose.app.data.model.domain.CatDetails
 
 
 @Composable
@@ -264,90 +259,6 @@ fun BreedDetails(
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
-        }
-    }
-}
-
-@PreviewLightDark
-@PreviewScreenSizes
-@Composable
-fun DetailScreenSuccessPreview() {
-    val catDetails = CatDetails(
-        "id",
-        "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg",
-        mainBreed = Breed(
-            "Norwegian Forest Cat",
-            temperaments = listOf(
-                "Sweet",
-                "Active",
-                "Intelligent",
-                "Social",
-                "Playful",
-                "Lively",
-                "Curious"
-            ),
-            description = "The Norwegian Forest Cat is a sweet, " +
-                    "loving cat. She appreciates praise and loves to interact with her parent. " +
-                    "She makes a loving companion and bonds with her parents once she accepts them for her own. " +
-                    "She is still a hunter at heart. She loves to chase toys as if they are real. " +
-                    "She is territorial and patrols several times each day to make certain that all is fine."
-        )
-    )
-
-    SharedTransitionPreviewTheme {
-        Surface {
-            DetailsScreenContent(
-                state = DetailState(
-                    catDetails = catDetails,
-                    isLoading = false,
-                    hasError = false,
-                    catImageUrl = catDetails.imageUrl
-                ),
-                onBackClick = {},
-                onTryAgainClick = {},
-                animatedVisibilityScope = it
-            )
-        }
-    }
-}
-
-
-@PreviewLightDark
-@PreviewScreenSizes
-@Composable
-fun DetailScreenErrorPreview() {
-    SharedTransitionPreviewTheme {
-        Surface {
-            DetailsScreenContent(
-                state = DetailState(
-                    isLoading = false,
-                    hasError = true,
-                    catImageUrl = "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg"
-                ),
-                onBackClick = {},
-                onTryAgainClick = {},
-                animatedVisibilityScope = it
-            )
-        }
-    }
-}
-
-@PreviewLightDark
-@PreviewScreenSizes
-@Composable
-fun DetailScreenLoadingPreview() {
-    SharedTransitionPreviewTheme {
-        Surface {
-            DetailsScreenContent(
-                state = DetailState(
-                    isLoading = true,
-                    hasError = false,
-                    catImageUrl = "https://cdn2.thecatapi.com/images/zKO1twSOV.jpg"
-                ),
-                onBackClick = {},
-                onTryAgainClick = {},
-                animatedVisibilityScope = it
-            )
         }
     }
 }
