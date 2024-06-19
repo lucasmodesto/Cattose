@@ -58,10 +58,12 @@ import br.com.cattose.app.core.ui.R
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.tags.TagList
+import br.com.cattose.app.core.ui.util.ExcludeFromJacocoGeneratedReport
 import br.com.cattose.app.core.ui.util.halfScreenWidthDp
 import br.com.cattose.app.data.model.domain.Breed
 
 
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun SharedTransitionScope.DetailScreen(
     onBackClick: () -> Unit,
@@ -79,7 +81,6 @@ fun SharedTransitionScope.DetailScreen(
         animatedVisibilityScope = animatedVisibilityScope,
     )
 }
-
 
 @Composable
 fun SharedTransitionScope.DetailsScreenContent(

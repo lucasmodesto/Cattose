@@ -55,7 +55,8 @@ class ListScreenTest {
     fun successState() {
         val pagingDataFlow = flowOf(
             PagingData.from(
-                data = cats, sourceLoadStates = LoadStates(
+                data = cats,
+                sourceLoadStates = LoadStates(
                     refresh = LoadState.NotLoading(false),
                     prepend = LoadState.NotLoading(false),
                     append = LoadState.NotLoading(false)
@@ -91,7 +92,8 @@ class ListScreenTest {
     fun initialLoading() {
         val pagingDataFlow = flowOf(
             PagingData.from(
-                data = listOf<CatImage>(), sourceLoadStates = LoadStates(
+                data = listOf<CatImage>(),
+                sourceLoadStates = LoadStates(
                     refresh = LoadState.Loading,
                     prepend = LoadState.Loading,
                     append = LoadState.Loading
@@ -117,7 +119,8 @@ class ListScreenTest {
     fun appendLoading() {
         val pagingDataFlow = flowOf(
             PagingData.from(
-                data = cats, sourceLoadStates = LoadStates(
+                data = cats,
+                sourceLoadStates = LoadStates(
                     refresh = LoadState.NotLoading(false),
                     prepend = LoadState.NotLoading(false),
                     append = LoadState.Loading
@@ -144,10 +147,11 @@ class ListScreenTest {
     }
 
     @Test
-    fun errorState() {
+    fun refreshErrorState() {
         val pagingDataFlow = flowOf(
             PagingData.from(
-                data = listOf<CatImage>(), sourceLoadStates = LoadStates(
+                data = listOf<CatImage>(),
+                sourceLoadStates = LoadStates(
                     refresh = LoadState.Error(Exception()),
                     prepend = LoadState.NotLoading(false),
                     append = LoadState.NotLoading(false)
@@ -175,10 +179,43 @@ class ListScreenTest {
     }
 
     @Test
+    fun appendErrorState() {
+        val pagingDataFlow = flowOf(
+            PagingData.from(
+                data = cats,
+                sourceLoadStates = LoadStates(
+                    refresh = LoadState.NotLoading(false),
+                    prepend = LoadState.NotLoading(false),
+                    append = LoadState.Error(Exception())
+                )
+            )
+        )
+
+        composeTestRule.setContent {
+            val lazyPagingItems = pagingDataFlow.collectAsLazyPagingItems()
+            SharedTransitionPreviewTheme {
+                ListScreenContent(
+                    lazyPagingItems = lazyPagingItems,
+                    onItemClick = {},
+                    animatedVisibilityScope = it
+                )
+            }
+        }
+        with(composeTestRule) {
+            onNodeWithTag(ERROR).assertIsNotDisplayed()
+            onNodeWithTag(APPEND_LOADING).assertIsNotDisplayed()
+            onNodeWithTag(INITIAL_LOADING).assertIsNotDisplayed()
+            onNodeWithTag(EMPTY_LIST).assertIsNotDisplayed()
+            onNodeWithTag(LAZY_GRID).onChildren().assertCountEquals(3)
+        }
+    }
+
+    @Test
     fun emptyState() {
         val pagingDataFlow = flowOf(
             PagingData.from(
-                data = listOf<CatImage>(), sourceLoadStates = LoadStates(
+                data = listOf<CatImage>(),
+                sourceLoadStates = LoadStates(
                     refresh = LoadState.NotLoading(true),
                     prepend = LoadState.NotLoading(false),
                     append = LoadState.NotLoading(false)
