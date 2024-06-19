@@ -57,6 +57,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.image.ImagePlaceholder
+import br.com.cattose.app.core.ui.util.ExcludeFromJacocoGeneratedReport
 import br.com.cattose.app.data.model.domain.CatImage
 import br.com.cattose.app.feature.list.ListTestTags.APPEND_LOADING
 import br.com.cattose.app.feature.list.ListTestTags.EMPTY_LIST
@@ -65,7 +66,7 @@ import br.com.cattose.app.feature.list.ListTestTags.INITIAL_LOADING
 import br.com.cattose.app.feature.list.ListTestTags.LAZY_GRID
 import coil.transform.RoundedCornersTransformation
 
-
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun SharedTransitionScope.ListScreen(
     onItemClick: (CatImage) -> Unit,
@@ -82,7 +83,6 @@ fun SharedTransitionScope.ListScreen(
         animatedVisibilityScope = animatedVisibilityScope
     )
 }
-
 
 @Composable
 fun SharedTransitionScope.ListScreenContent(
