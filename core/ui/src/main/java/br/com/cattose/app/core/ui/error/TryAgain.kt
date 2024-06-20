@@ -47,7 +47,7 @@ fun TryAgain(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = (message),
+            text = message,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )
