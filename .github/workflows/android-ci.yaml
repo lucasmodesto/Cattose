@@ -131,7 +131,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -grpc 8554
-          emulator-build: 7425822
+          emulator-build: 11834374
           disk-size: 6000M
           heap-size: 600M
           script: ./gradlew connectedDemoDebugAndroidTest
