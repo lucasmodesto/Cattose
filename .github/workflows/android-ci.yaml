@@ -84,7 +84,7 @@ jobs:
     timeout-minutes: 55
     strategy:
       matrix:
-        api-level: [ 23, 33 ]
+        api-level: [ 23, 34 ]
 
     steps:
       # From https://github.com/android/nowinandroid/pull/1219/files to fix flaky emulator start
@@ -136,15 +136,15 @@ jobs:
           script: ./gradlew connectedDemoDebugAndroidTest
 
       - name: Run unit tests for coverage report
-        if: matrix.api-level == 33
+        if: matrix.api-level == 34
         run: ./gradlew testDemoDebugUnitTest
 
       - name: Generate JaCoCo coverage report
-        if: matrix.api-level == 33
+        if: matrix.api-level == 34
         run: ./gradlew createDemoDebugJacocoReport
 
-      - name: Display local test coverage (only API 33)
-        if: matrix.api-level == 33
+      - name: Display local test coverage (only API 34)
+        if: matrix.api-level == 34
         id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         with:
@@ -155,8 +155,8 @@ jobs:
             ${{ github.workspace }}/**/build/reports/jacoco/**/*Report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload local coverage reports (only API 33)
-        if: matrix.api-level == 33
+      - name: Upload local coverage reports (only API 34)
+        if: matrix.api-level == 34
         uses: actions/upload-artifact@v4
         with:
           name: coverage-reports
