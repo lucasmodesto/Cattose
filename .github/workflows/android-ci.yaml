@@ -129,10 +129,8 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
-          target: google_apis
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -grpc 8554 -grpc-use-jwt
-          emulator-build: 12038310
           disk-size: 6000M
           heap-size: 600M
           script: ./gradlew connectedDemoDebugAndroidTest
