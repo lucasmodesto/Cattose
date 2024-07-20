@@ -125,7 +125,7 @@ jobs:
         run: ./gradlew packageDemoDebug packageDemoDebugAndroidTest
 
       - name: Run android tests
-        uses: reactivecircus/android-emulator-runner@v2.32.0
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
