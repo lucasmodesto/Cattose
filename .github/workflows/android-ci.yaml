@@ -111,8 +111,6 @@ jobs:
       matrix:
         api-level: [23, 33]
 
-    needs: build  # Ensure 'build' job completes before running Android tests
-
     steps:
       - name: Delete unnecessary tools 🔧
         uses: jlumbroso/free-disk-space@v1.3.1
