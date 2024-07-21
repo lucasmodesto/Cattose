@@ -182,6 +182,9 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       # Adjust paths and commands as per your project's Jacoco configuration
       - name: Generate JaCoCo coverage report
         run: ./gradlew createDemoDebugJacocoReport
