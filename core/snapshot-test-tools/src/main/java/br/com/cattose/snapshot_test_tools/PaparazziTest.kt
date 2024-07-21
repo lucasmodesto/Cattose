@@ -23,7 +23,8 @@ abstract class PaparazziTest(
     val paparazzi: Paparazzi = Paparazzi(
         deviceConfig = config.deviceConfig.copy(nightMode = nightMode),
         theme = PaparazziTheme.MATERIAL_LIGHT_NO_ACTION_BAR.themeName,
-        maxPercentDifference = 0.05
+        maxPercentDifference = 0.05,
+        showSystemUi = false
     )
 
     @OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoilApi::class)
