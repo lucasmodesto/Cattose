@@ -31,7 +31,7 @@ navigation-compose = "2.8.0-beta03"
 jacoco = "0.8.12"
 kotlinx-serialization = "1.7.1"
 desugar = "2.0.4"
-paparazzi = "1.3.4"
+paparazzi = "1.3.5-SNAPSHOT"
 test-parameter-injector = "1.16"
 robolectric = "4.13"
 
