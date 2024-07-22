@@ -168,9 +168,9 @@ jobs:
   coverage_report:
     name: "Coverage Report"
     runs-on: ubuntu-latest
-    needs: [unit_tests, android_tests]  # Wait for unit_tests and android_tests to complete
+    needs: [unit_tests, android_tests]
 
-    if: always()  # Only run if all previous jobs (unit_tests and android_tests) succeed
+    if: always()
 
     steps:
       - name: Checkout
@@ -185,7 +185,17 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      # Adjust paths and commands as per your project's Jacoco configuration
+      - name: Download unit test reports
+        uses: actions/download-artifact@v4
+        with:
+          name: unit-test-reports
+
+      - name: Download Android test reports
+        uses: actions/download-artifact@v4
+        with:
+          name: android-test-reports-33
+          path: android-test-reports-33
+
       - name: Generate JaCoCo coverage report
         run: ./gradlew createDemoDebugJacocoReport
 
