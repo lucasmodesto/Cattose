@@ -45,7 +45,7 @@ jobs:
         run: ./gradlew app:assembleDebug
 
   snapshot_test:
-    name: "Snapshot tests"
+    name: "Snapshot Tests"
     runs-on: ubuntu-latest
 
     permissions:
@@ -195,6 +195,9 @@ jobs:
         with:
           name: android-test-reports-33
           path: android-test-reports-33
+
+      - name: Sync dependencies
+        run: ./gradlew sync
 
       - name: Generate JaCoCo coverage report
         run: ./gradlew createDemoDebugJacocoReport
