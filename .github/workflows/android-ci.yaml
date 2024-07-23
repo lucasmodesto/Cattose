@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew check -p build-logic
 
       - name: Build APK
-        run: ./gradlew app:assembleDebug
+        run: ./gradlew app:assembleDebug --info
 
   snapshot_test:
     name: "Snapshot Tests"
@@ -93,8 +93,18 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Run unit tests
-        run: ./gradlew testDemoDebugUnitTest
+        run: ./gradlew testDemoDebugUnitTest --info
 
       - name: Upload unit test reports
         if: always()
@@ -102,6 +112,13 @@ jobs:
         with:
           name: unit-test-reports
           path: '**/build/reports/tests'
+
+      - name: Upload JaCoCo exec files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-exec-files
+          path: '**/build/jacoco/testDemoDebugUnitTest.exec'
 
   android_tests:
     name: "Android Tests"
@@ -156,7 +173,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -grpc 8554 -grpc-use-jwt
           disk-size: 6000M
           heap-size: 600M
-          script: ./gradlew connectedDemoDebugAndroidTest
+          script: ./gradlew connectedDemoDebugAndroidTest --info
 
       - name: Upload Android test reports
         if: always()
@@ -185,10 +202,26 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Download unit test reports
         uses: actions/download-artifact@v4
         with:
           name: unit-test-reports
+
+      - name: Download JaCoCo exec files
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-exec-files
+          path: jacoco-exec-files
 
       - name: Download Android test reports
         uses: actions/download-artifact@v4
@@ -197,7 +230,7 @@ jobs:
           path: android-test-reports-33
 
       - name: Generate JaCoCo coverage report
-        run: ./gradlew createDemoDebugJacocoReport
+        run: ./gradlew createDemoDebugJacocoReport --info
 
       - name: Display local test coverage
         id: jacoco
