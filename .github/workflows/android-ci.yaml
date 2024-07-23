@@ -196,9 +196,6 @@ jobs:
           name: android-test-reports-33
           path: android-test-reports-33
 
-      - name: Sync dependencies
-        run: ./gradlew sync
-
       - name: Generate JaCoCo coverage report
         run: ./gradlew createDemoDebugJacocoReport
 
