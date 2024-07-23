@@ -118,7 +118,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-exec-files
-          path: '**/build/jacoco/testDemoDebugUnitTest.exec'
+          path: '**/build/outputs/**/**.exec'
 
   android_tests:
     name: "Android Tests"
@@ -175,6 +175,13 @@ jobs:
           heap-size: 600M
           script: ./gradlew connectedDemoDebugAndroidTest --info
 
+      - name: Upload JaCoCo coverage ec file
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-android-ec-file
+          path: '**/build/code_coverage/demoDebugAndroidTest/connected/**/coverage.ec'
+
       - name: Upload Android test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -217,11 +224,17 @@ jobs:
         with:
           name: unit-test-reports
 
-      - name: Download JaCoCo exec files
+      - name: Download Unit Tests JaCoCo exec files
         uses: actions/download-artifact@v4
         with:
           name: jacoco-exec-files
           path: jacoco-exec-files
+
+      - name: Download Android Tests JaCoCo ec file
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-android-ec-file
+          path: jacoco-android-ec-file
 
       - name: Download Android test reports
         uses: actions/download-artifact@v4
