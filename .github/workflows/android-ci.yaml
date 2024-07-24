@@ -42,10 +42,41 @@ jobs:
         run: ./gradlew check -p build-logic
 
       - name: Build APK
-        run: ./gradlew app:assembleDebug --info
+        run: ./gradlew app:assembleDebug
+
+  test:
+    name: "Unit Tests"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Unit tests
+        run: ./gradlew testDemoDebugUnitTest
 
   snapshot_test:
-    name: "Snapshot Tests"
+    name: "Snapshot tests"
     runs-on: ubuntu-latest
 
     permissions:
@@ -75,60 +106,17 @@ jobs:
       - name: Snapshot tests
         run: ./gradlew verifyPaparazziDemoDebug
 
-  unit_tests:
-    name: "Unit Tests"
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: 17
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Run unit tests
-        run: ./gradlew testDemoDebugUnitTest --info
-
-      - name: Upload unit test reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-reports
-          path: '**/build/reports/tests'
-
-      - name: Upload JaCoCo exec files
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-exec-files
-          path: '**/build/outputs/**/**.exec'
-
-  android_tests:
-    name: "Android Tests"
+  android_test:
+    name: "Android tests / Coverage report"
     runs-on: ubuntu-latest
     timeout-minutes: 55
     strategy:
       matrix:
-        api-level: [23, 33]
+        api-level: [ 23, 33 ]
 
     steps:
+      # From https://github.com/android/nowinandroid/pull/1219/files to fix flaky emulator start
+      # Issue https://github.com/ReactiveCircus/android-emulator-runner/issues/324#issuecomment-2009351180
       - name: Delete unnecessary tools 🔧
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
@@ -164,7 +152,7 @@ jobs:
       - name: Build project before running emulator
         run: ./gradlew packageDemoDebug packageDemoDebugAndroidTest
 
-      - name: Run Android tests
+      - name: Run android tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
@@ -173,79 +161,18 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -grpc 8554 -grpc-use-jwt
           disk-size: 6000M
           heap-size: 600M
-          script: ./gradlew connectedDemoDebugAndroidTest --info
+          script: ./gradlew connectedDemoDebugAndroidTest
 
-      - name: Upload JaCoCo coverage ec file
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-android-ec-file
-          path: '**/build/outputs/code_coverage/demoDebugAndroidTest/connected/**/coverage.ec'
-
-      - name: Upload Android test reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-test-reports-${{ matrix.api-level }}
-          path: '**/build/reports/androidTests'
-
-  coverage_report:
-    name: "Coverage Report"
-    runs-on: ubuntu-latest
-    needs: [unit_tests, android_tests]
-
-    if: always()
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: 17
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Download unit test reports
-        uses: actions/download-artifact@v4
-        with:
-          name: unit-test-reports
-
-      - name: Download Unit Tests JaCoCo exec files
-        uses: actions/download-artifact@v4
-        with:
-          name: jacoco-exec-files
-          path: jacoco-exec-files
-
-      - name: Download Android Tests JaCoCo ec file
-        uses: actions/download-artifact@v4
-        with:
-          name: jacoco-android-ec-file
-          path: jacoco-android-ec-file
-
-      - name: Download Android test reports
-        uses: actions/download-artifact@v4
-        with:
-          name: android-test-reports-33
-          path: android-test-reports-33
+      - name: Run unit tests for coverage report
+        if: matrix.api-level == 33
+        run: ./gradlew testDemoDebugUnitTest
 
       - name: Generate JaCoCo coverage report
-        run: ./gradlew createDemoDebugJacocoReport --info
+        if: matrix.api-level == 33
+        run: ./gradlew createDemoDebugJacocoReport
 
-      - name: Display local test coverage
+      - name: Display local test coverage (only API 33)
+        if: matrix.api-level == 33
         id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         with:
@@ -256,7 +183,8 @@ jobs:
             ${{ github.workspace }}/**/build/reports/jacoco/**/*Report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload coverage reports
+      - name: Upload local coverage reports (only API 33)
+        if: matrix.api-level == 33
         uses: actions/upload-artifact@v4
         with:
           name: coverage-reports
@@ -266,7 +194,8 @@ jobs:
           path: '**/build/reports/jacoco/'
 
       - name: Upload test reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
+          name: test-reports-${{ matrix.api-level }}
           path: '**/build/reports/androidTests'
