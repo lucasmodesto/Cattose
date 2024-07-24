@@ -180,7 +180,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-android-ec-file
-          path: '**/build/code_coverage/demoDebugAndroidTest/connected/**/coverage.ec'
+          path: '**/build/outputs/code_coverage/demoDebugAndroidTest/connected/**/coverage.ec'
 
       - name: Upload Android test reports
         if: always()
