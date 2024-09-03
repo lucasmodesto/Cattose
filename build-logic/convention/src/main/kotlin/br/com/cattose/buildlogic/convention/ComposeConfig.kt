@@ -18,11 +18,12 @@ package br.com.cattose.buildlogic.convention
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 internal fun Project.configureAndroidCompose() {
     pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
     with(extensions.getByType<ComposeCompilerGradlePluginExtension>()) {
-        enableStrongSkippingMode.set(true)
+        featureFlags.set(listOf(ComposeFeatureFlag.StrongSkipping))
         includeSourceInformation.set(true)
     }
 }
