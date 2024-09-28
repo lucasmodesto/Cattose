@@ -68,6 +68,7 @@ import br.com.cattose.app.feature.list.ListTestTags.INITIAL_LOADING
 import br.com.cattose.app.feature.list.ListTestTags.LAZY_GRID
 import coil.transform.RoundedCornersTransformation
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.ListScreen(
     onItemClick: (CatImage) -> Unit,
