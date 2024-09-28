@@ -16,6 +16,7 @@
 
 package br.com.cattose.app.feature.detail
 
+import android.os.Build
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import app.cash.turbine.test
@@ -36,8 +37,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailViewModelTest {
 
