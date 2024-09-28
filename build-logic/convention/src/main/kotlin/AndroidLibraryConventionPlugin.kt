@@ -38,7 +38,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 defaultConfig {
                     @Suppress("UnstableApiUsage")
                     testOptions {
-                        targetSdk = 34
+                        targetSdk = 35
                         animationsDisabled = true
                         unitTests {
                             isIncludeAndroidResources = true

@@ -112,7 +112,7 @@ jobs:
     timeout-minutes: 55
     strategy:
       matrix:
-        api-level: [ 23, 33 ]
+        api-level: [ 23, 34 ]
 
     steps:
       # From https://github.com/android/nowinandroid/pull/1219/files to fix flaky emulator start
