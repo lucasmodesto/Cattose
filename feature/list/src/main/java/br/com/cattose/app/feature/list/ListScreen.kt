@@ -37,14 +37,17 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
@@ -57,7 +60,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import br.com.cattose.app.core.ui.error.TryAgain
 import br.com.cattose.app.core.ui.image.DefaultAsyncImage
 import br.com.cattose.app.core.ui.image.ImagePlaceholder
-import br.com.cattose.app.core.ui.util.ExcludeFromJacocoGeneratedReport
 import br.com.cattose.app.data.model.domain.CatImage
 import br.com.cattose.app.feature.list.ListTestTags.APPEND_LOADING
 import br.com.cattose.app.feature.list.ListTestTags.EMPTY_LIST
@@ -66,7 +68,6 @@ import br.com.cattose.app.feature.list.ListTestTags.INITIAL_LOADING
 import br.com.cattose.app.feature.list.ListTestTags.LAZY_GRID
 import coil.transform.RoundedCornersTransformation
 
-@ExcludeFromJacocoGeneratedReport
 @Composable
 fun SharedTransitionScope.ListScreen(
     onItemClick: (CatImage) -> Unit,
@@ -92,12 +93,7 @@ fun SharedTransitionScope.ListScreenContent(
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     val refreshState = rememberPullToRefreshState()
-
-    if (refreshState.isRefreshing) {
-        LaunchedEffect(Unit) {
-            lazyPagingItems.refresh()
-        }
-    }
+    var isRefreshing by remember { mutableStateOf(false) }
 
     when (lazyPagingItems.loadState.refresh) {
         LoadState.Loading -> {
@@ -110,6 +106,8 @@ fun SharedTransitionScope.ListScreenContent(
                 ) {
                     CircularProgressIndicator()
                 }
+            } else {
+                isRefreshing = true
             }
         }
 
@@ -121,10 +119,12 @@ fun SharedTransitionScope.ListScreenContent(
                     onTryAgainClick = {
                         lazyPagingItems.refresh()
                     },
-                    modifier = Modifier.fillMaxSize().testTag(ERROR)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag(ERROR)
                 )
             }
-            refreshState.endRefresh()
+            isRefreshing = false
         }
 
         is LoadState.NotLoading -> {
@@ -140,7 +140,7 @@ fun SharedTransitionScope.ListScreenContent(
                         .testTag(EMPTY_LIST)
                 )
             }
-            refreshState.endRefresh()
+            isRefreshing = false
         }
     }
 
@@ -151,7 +151,13 @@ fun SharedTransitionScope.ListScreenContent(
             3
         }
 
-    Box(Modifier.nestedScroll(refreshState.nestedScrollConnection)) {
+    PullToRefreshBox(
+        state = refreshState,
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            lazyPagingItems.refresh()
+        }
+    ) {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(columns),
             modifier = modifier
@@ -203,10 +209,6 @@ fun SharedTransitionScope.ListScreenContent(
                 is LoadState.NotLoading -> Unit
             }
         }
-        PullToRefreshContainer(
-            modifier = Modifier.align(Alignment.TopCenter),
-            state = refreshState,
-        )
     }
 }
 
