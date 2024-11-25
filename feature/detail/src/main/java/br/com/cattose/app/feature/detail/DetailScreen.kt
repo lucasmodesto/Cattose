@@ -179,7 +179,7 @@ fun SharedTransitionScope.DetailsHeader(
             modifier = modifier
                 .align(Alignment.TopStart)
                 .sharedElement(
-                    state = rememberSharedContentState(key = imageUrl),
+                    sharedContentState = rememberSharedContentState(key = imageUrl),
                     animatedVisibilityScope = animatedVisibilityScope,
                     renderInOverlayDuringTransition = false // for the back button to show during transition
                 )
