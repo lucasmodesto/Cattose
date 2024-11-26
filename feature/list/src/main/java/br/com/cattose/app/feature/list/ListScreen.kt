@@ -226,7 +226,7 @@ fun SharedTransitionScope.CatListItem(
             .clickable { onItemClick(cat) }
             .wrapContentSize()
             .sharedElement(
-                state = rememberSharedContentState(key = cat.imageUrl),
+                sharedContentState = rememberSharedContentState(key = cat.imageUrl),
                 animatedVisibilityScope = animatedVisibilityScope
             )
             .clip(RoundedCornerShape(8.dp))
