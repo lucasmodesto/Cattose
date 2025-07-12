@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -81,7 +82,7 @@ fun SharedTransitionScope.ListScreen(
     ListScreenContent(
         lazyPagingItems = lazyPagingItems,
         onItemClick = onItemClick,
-        modifier = modifier,
+        modifier = Modifier.statusBarsPadding().then(modifier),
         animatedVisibilityScope = animatedVisibilityScope
     )
 }
