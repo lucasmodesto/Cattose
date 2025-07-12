@@ -82,7 +82,7 @@ fun SharedTransitionScope.ListScreen(
     ListScreenContent(
         lazyPagingItems = lazyPagingItems,
         onItemClick = onItemClick,
-        modifier = Modifier.statusBarsPadding().then(modifier),
+        modifier = modifier.then(Modifier.statusBarsPadding()),
         animatedVisibilityScope = animatedVisibilityScope
     )
 }
