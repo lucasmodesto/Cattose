@@ -189,8 +189,8 @@ fun SharedTransitionScope.DetailsHeader(
         )
         FilledIconButton(
             modifier = Modifier
-                .padding(16.dp)
                 .statusBarsPadding()
+                .padding(16.dp)
                 .testTag(DetailTestTags.BACK_BUTTON),
             onClick = {
                 onBackClick()
