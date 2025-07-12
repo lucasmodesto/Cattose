@@ -244,8 +244,8 @@ fun BreedDetails(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = Modifier
-        .navigationBarsPadding()
-        .then(modifier)) {
+        .then(modifier)
+        .navigationBarsPadding()) {
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             Text(
