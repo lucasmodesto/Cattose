@@ -12,7 +12,7 @@ The app currently includes two screens: a list screen that shows random kitties 
 ## Architecture
 Cattose follows the MVVM pattern with the repository approach and integrates elements of Clean Architecture, 
 such as using dependency injection with interfaces, resulting in a decoupled design that is flexible and adaptable to changes, 
-aligned to [Android Architecture Guide](https://developer.android.com/topic/architecture) from Google.
+aligned to [Android Architecture Guide](https://developer.android.com/topic/architecture) from Google and highly inspired in [nowinandroid](https://github.com/android/nowinandroid) app.
 
 ## Main Development Libraries
 - [Material3](https://m3.material.io/)
