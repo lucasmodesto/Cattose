@@ -1,6 +1,6 @@
 [versions]
 agp = "8.12.0"
-tools = "31.11.1"
+tools = "31.13.0"
 kotlin = "2.2.0"
 core-ktx = "1.16.0"
 junit = "4.13.2"
